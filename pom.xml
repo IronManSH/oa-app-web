@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+    <groupId>cn.sino</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  	<artifactId>oa-app-web</artifactId>
+  	<parent>  
+		<groupId>org.springframework.boot</groupId>  
+		<artifactId>spring-boot-starter-parent</artifactId>  
+		<version>1.4.1.RELEASE</version>  
+	</parent>  
+	
+	<properties>
+		<project.build.sourceEncoding></project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+  	<dependencies>
+		<!-- dubbo -->	
+		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-common</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+	  		<groupId>com.micro</groupId>
+	   	 	<artifactId>user-api</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
+	    </dependency>
+	    <dependency>
+	  		<groupId>cn.sino</groupId>
+  			<artifactId>sup-setting-api</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+	    </dependency> 
+  		<!-- 集成ehcache需要的依赖-->  
+	  	<dependency>  
+			<groupId>org.springframework</groupId>  
+			<artifactId>spring-context-support</artifactId>  
+		</dependency>  
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>  
+			<artifactId>ehcache</artifactId>  
+		</dependency>
+  		<!-- 业务接口 -->
+  		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-appoint-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-maintain-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-notice-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-onjob-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-transaction-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>cn.sino</groupId>
+  			<artifactId>oa-task-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<!-- 二维码 生成-->
+		<dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+  		<!-- 网盘 -->
+  		<dependency>
+  			<groupId>com.sinosoft.api</groupId>
+  			<artifactId>disc-api</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+  		<!-- 阿里json -->
+  		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.58</version>
+		</dependency>
+		<!-- nacos -->
+		<dependency>
+			<groupId>com.alibaba.boot</groupId>
+			<artifactId>nacos-config-spring-boot-starter</artifactId>
+			<version>0.1.1</version>
+		</dependency>
+  		<!-- 推送系统 -->
+  		<dependency>
+		    <groupId>com.micro</groupId>
+		    <artifactId>micro-push-server-api</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<build>  
+		<finalName>${project.artifactId}</finalName>
+		<plugins> 
+			<!--jdk的编译版本-->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!--运行插件-->
+			<plugin>  
+				<groupId>org.springframework.boot</groupId>  
+				<artifactId>spring-boot-maven-plugin</artifactId>  
+			</plugin>
+		</plugins>
+	</build>
+</project>
