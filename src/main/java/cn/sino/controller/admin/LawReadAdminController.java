@@ -25,7 +25,7 @@ import cn.sino.service.dubbo.appointment.DubboWindowInfoService;
 import cn.sino.service.dubbo.setting.DubboUserSiteService;
 @RestController
 @RequestMapping("/app/lawReadInfo")
-public class LawReadAadminController {
+public class LawReadAdminController {
 	
 	@Reference(check=false)
 	private DubboLawReadInfoService dubboLawReadInfoService;
