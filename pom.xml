@@ -101,6 +101,12 @@
 		    <artifactId>micro-push-server-api</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- 腾讯云短信推送 -->
+		<dependency>
+			<groupId>com.github.qcloudsms</groupId>
+			<artifactId>qcloudsms</artifactId>
+			<version>1.0.6</version>
+		</dependency>
 	</dependencies>
 	<build>  
 		<finalName>${project.artifactId}</finalName>

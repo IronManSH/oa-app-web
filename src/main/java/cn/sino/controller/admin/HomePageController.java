@@ -24,6 +24,7 @@ import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoAdmin;
 import cn.sino.mvc.UserInfoUtils;
+import cn.sino.service.dubbo.appointment.DubboCaseManageService;
 import cn.sino.service.dubbo.appointment.DubboLawReadInfoService;
 import cn.sino.service.dubbo.appointment.DubboLineUpService;
 import cn.sino.service.dubbo.appointment.DubboMeetingService;
@@ -67,6 +68,8 @@ public class HomePageController {
 	private DubboUserService dubboUserService;
 	@Reference(check=false)
 	private DubboActivityService dubboActivityService;
+	@Reference(check=false)
+	private DubboCaseManageService dubboCaseManageService;
 	//维护维修系统id(梧州)
 	@Value("${ep.whwx.subId}")
 	private String subId;
@@ -96,18 +99,19 @@ public class HomePageController {
 			List<Map<String, Object>> visitList = dubboVisitApplyInfoService.findSomeDayTask(userid, date);//来访预约
 			List<Map<String, Object>> findMyMeeting = dubboMeetingService.findMyMeeting(userid, date);//会议发布
 			List<Map<String, Object>> activitList = dubboActivityService.findMyReleaseList(userid, date);//活动发布
-			
 			List<Map<String,Object>>lawlist=new ArrayList<Map<String,Object>>();
 			if(deptid.equals(agdeptid)){
 				lawlist= dubboUserSiteService.findLawUser("", "","",date);//律师注册
 				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findMyCheck("", date);//律师阅卷审批
 				lawlist.addAll(lawReadInfoList);
 			}
+			List<Map<String, Object>> aglist = dubboCaseManageService.findNotDoneList(userid, date);//案管
 			List<Map<String, Object>> maintainList =new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> lineUpList = dubboLineUpService.findTaskList(userid, date);//窗口业务
-			List<Map<String, Object>> roomTaskList=new ArrayList<Map<String,Object>>();
+//			List<Map<String, Object>> roomTaskList=new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> windowList=new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> windowIdList = dubboWindowDutyService.findWindowIdList(userid, date);//检查是否有权限查看窗口
+			
 			if(windowIdList.size()!=0){
 				Date nowdate = new Date();
 		        SimpleDateFormat df = new SimpleDateFormat("HH");
@@ -129,10 +133,10 @@ public class HomePageController {
 				}
 		        	
 			}
-			Integer num = dubboWindowInfoService.inspect(userid);//查询接待室权限
-			if(num!=0){
-				roomTaskList = dubboLineUpService.findRoomTaskList(date);//获取接待室任务
-			}
+//			Integer num = dubboWindowInfoService.inspect(userid);//查询接待室权限
+//			if(num!=0){
+//				roomTaskList = dubboLineUpService.findRoomTaskList(date);//获取接待室任务
+//			}
 			Map<String, Object> roles = dubboRolesService.findRolesById(userid, subId);//查询维护维护业务角色
 			String rolesNO = roles.get("rolesNO").toString();
 			if(rolesNO.equals(wxglcode)){
@@ -150,11 +154,11 @@ public class HomePageController {
 					visitList.add(visitList.size(),f);
 				});
 			}
-			if(roomTaskList.size()!=0){
-				roomTaskList.forEach(f->{
-					visitList.add(visitList.size(),f);
-				});
-			}
+//			if(roomTaskList.size()!=0){
+//				roomTaskList.forEach(f->{
+//					visitList.add(visitList.size(),f);
+//				});
+//			}
 			if(windowList.size()!=0){
 				windowList.forEach(f->{
 					visitList.add(visitList.size(),f);
@@ -174,6 +178,11 @@ public class HomePageController {
 			}
 			if(activitList.size()!=0){
 				activitList.forEach(f->{
+					visitList.add(visitList.size(),f);
+				});
+			}
+			if(aglist.size()!=0){
+				aglist.forEach(f->{
 					visitList.add(visitList.size(),f);
 				});
 			}
@@ -203,6 +212,7 @@ public class HomePageController {
 			List<Map<String, Object>> lawReadList = dubboLawReadInfoService.findTaskList(userid, date);//律师阅卷
 			List<Map<String, Object>> lawTaskList = dubboUserSiteService.findTaskList(userid, date);//律师注册
 			List<Map<String, Object>> maintainlist = dubboMaintainService.findCompleteList(userid, date);//维护维修
+			List<Map<String, Object>> aglist = dubboCaseManageService.findDoneList(userid,date);
 			if(lineUpList.size()!=0){
 				for (int i = 0; i < lineUpList.size(); i++) {
 					visitList.add(visitList.size(), lineUpList.get(i));
@@ -226,6 +236,11 @@ public class HomePageController {
 			if(maintainlist.size()!=0){
 				for (int i = 0; i < maintainlist.size(); i++) {
 					visitList.add(visitList.size(), maintainlist.get(i));
+				}
+			}
+			if(aglist.size()!=0){
+				for (int i = 0; i < aglist.size(); i++) {
+					visitList.add(visitList.size(), aglist.get(i));
 				}
 			}
 			return ResultUtils.success("查询成功", visitList);
@@ -280,7 +295,7 @@ public class HomePageController {
 			Map<String, Object> roles = dubboRolesService.findRolesById(userid, subId);
 			List<Map<String,Object>>list=new ArrayList<Map<String,Object>>();
 			String rolesNO = roles.get("rolesNO").toString();
-			Integer code = dubboWindowInfoService.inspect(userid);
+			//Integer code = dubboWindowInfoService.inspect(userid);
 			for(int i=1;i<=days;i++){
 				Integer lineUpNum = dubboLineUpService.findTaskNum(userid, date+"-"+i);
 				Map<String, Object> map=new HashMap<String,Object>();
@@ -288,23 +303,23 @@ public class HomePageController {
 				Integer meetingTaskMun = dubboMeetingService.findTaskNum(userid, date+"-"+i);
 				Integer maintainTaskNum=0;
 				Integer lawTaskNum=0;
-				Integer roomTaskNum=0;
+				//Integer roomTaskNum=0;
 				Integer ativityNum = dubboActivityService.findMyReleaseNum(userid, date+"-"+i);
-				if(!code.equals("0")){
-					roomTaskNum = dubboLineUpService.findTaskNum(date+"-"+i);//接待室任务数量
-				}
+//				if(!code.equals("0")){
+//					roomTaskNum = dubboLineUpService.findTaskNum(date+"-"+i);//接待室任务数量
+//				}
 				if(deptid.equals(agdeptid)){
 					lawTaskNum= dubboUserSiteService.findTaskNum("", date+"-"+i);
 					Integer lwsreadnum = dubboLawReadInfoService.findTaskNum("", date+"-"+i);
 					lawTaskNum+=lwsreadnum;
-					
 				}
 				if(rolesNO.equals(wxglcode)){
 					maintainTaskNum = dubboMaintainService.findTaskNum("", date+"-"+i);
 				}else if(rolesNO.equals(wxrycode)){
 					maintainTaskNum = dubboMaintainService.findTaskNum(userid, date+"-"+i);
 				}
-				int num=visitTaskNum+meetingTaskMun+maintainTaskNum+lawTaskNum+lineUpNum+roomTaskNum+ativityNum;
+				Integer agnum = dubboCaseManageService.findNotDoneNum(userid, date+"-"+i);//案管
+				int num=visitTaskNum+meetingTaskMun+maintainTaskNum+lawTaskNum+lineUpNum+ativityNum+agnum;
 				if(num!=0){
 					map.put("num", num);
 					map.put("code", "N");
@@ -369,6 +384,9 @@ public class HomePageController {
 					break;
 				case "wh":
 					map=dubboMaintainService.findTaskDetails(id, type);
+					break;
+				case "ag":
+					map=dubboCaseManageService.findDetails(sendId);
 					break;
 			}
 			return ResultUtils.success("查询成功", map);

@@ -1,6 +1,5 @@
 package cn.sino.mvc;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.google.zxing.Binarizer;
 import com.micro.model.UserInfo;
 import com.micro.service.dubbo.user.DubboLoginService;
 

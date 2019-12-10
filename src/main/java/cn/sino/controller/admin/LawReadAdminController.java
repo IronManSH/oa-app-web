@@ -55,7 +55,7 @@ public class LawReadAdminController {
 		try {
 			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
 			String deptid = userInfo.getDeptid();
-			if(deptid.equals(agdeptid)){
+			if(!deptid.equals(agdeptid)){
 				throw new RuntimeException("该账号没有权限访问");
 			}
 			String status = request.getParameter("status");

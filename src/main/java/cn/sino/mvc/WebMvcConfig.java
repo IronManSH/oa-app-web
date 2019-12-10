@@ -70,7 +70,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		.excludePathPatterns("/appfront/activity/register")//活动入场二维码
 		.excludePathPatterns("/appfront/activity/findSignupDetails")//报名详情
 		.excludePathPatterns("/appfront/activity/downloadfile")//活动附件下载
-		.excludePathPatterns("/appfront/user/findByPid");//获取地级市
+		.excludePathPatterns("/appfront/user/findByPid")//获取地级市
+		.excludePathPatterns("/appfront/smsverify/sendCode")//获取短信验证码
+		.excludePathPatterns("/appfront/user/smslogin");//短信登录
 		super.addInterceptors(registry);
 	}
 }

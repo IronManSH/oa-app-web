@@ -94,6 +94,7 @@ public class LineUpAdminController {
 			
 		}
 	}
+	
 	@RequestMapping("/updateStatus")
 	public Result updateStatus(HttpServletRequest request){
 		try{
@@ -152,7 +153,7 @@ public class LineUpAdminController {
 					    System.out.println(resultuser.getMsg());
 					}
 				}
-			}else if(status.equals("3")){//转到接待室
+			}else if(status.equals("3")){//转到窗口
 				if(lineUpStatus.equals("0")){
 					throw new RuntimeException("请先叫号");
 				}
@@ -180,8 +181,9 @@ public class LineUpAdminController {
 			
 		}
 	}
-
-	@RequestMapping("/sendtoroom")
+	
+	//已废
+	//@RequestMapping("/sendtoroom")
 	public Result sendtoroom(HttpServletRequest request){
 		try{
 			String id = request.getParameter("id");
@@ -221,6 +223,31 @@ public class LineUpAdminController {
 			    PushResult result=dubboNettyService.sendToUser(bean);
 			    System.out.println(result.getMsg());
 			}
+			return ResultUtils.success("发送成功", null);
+		}catch(Exception e){
+			return ResultUtils.error(e.getMessage());
+			
+		}
+	}
+	
+	@RequestMapping("/sendWindow")
+	public Result sendWindow(HttpServletRequest request){
+		try{
+			String status = request.getParameter("status");
+			if(status==null||"".equals(status)){
+				throw new RuntimeException("status为空");
+			}
+			if(status.equals("0")){
+				throw new RuntimeException("请先叫号");
+			}
+			String id = request.getParameter("id");
+			String windowid = request.getParameter("windowid");
+			String sendwindowid = request.getParameter("sendwindowid");
+			String sendreason = request.getParameter("sendreason");
+			UserInfoAdmin userinfo = UserInfoUtils.getBeanAdmin(request);
+			String senduserid = userinfo.getId();
+			String sendusername = userinfo.getNickname();
+			dubboLineUpService.sendWindow(id, windowid, sendwindowid, senduserid, sendusername, sendreason);
 			return ResultUtils.success("发送成功", null);
 		}catch(Exception e){
 			return ResultUtils.error(e.getMessage());

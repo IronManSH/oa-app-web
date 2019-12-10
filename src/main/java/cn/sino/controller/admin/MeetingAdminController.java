@@ -145,29 +145,31 @@ public class MeetingAdminController {
 	}
 	
 	@RequestMapping("/findDeptsAndUsers")
-	public Result findDeptsAndUsers(){
+	public Result findDeptsAndUsers(HttpServletRequest request){
 		try {
-			List<DeptInfo> list = dubboDeptService.findAll("");
-			List<Map<String,Object>>deptList=new ArrayList<Map<String,Object>>();
-			list.forEach(d->{
-				Map<String,Object>deptidMap =new HashMap<String,Object>();
-				List<Map<String,Object>>userList=new ArrayList<Map<String,Object>>();
-				String deptid = d.getId();
-				String name = d.getName();
-				deptidMap.put("deptid", deptid);
-				deptidMap.put("deptname", name);
-				dubboUserService.getUserByDeptId(deptid).forEach(u->{
-					Map<String,Object>userMap=new HashMap<String,Object>();
-					String userid = u.getId();
-					String username = u.getNickname();
-					userMap.put("userid", userid);
-					userMap.put("username", username);
-					userList.add(userMap);
-				});
-				deptidMap.put("userList",userList);
-				deptList.add(deptList.size(), deptidMap);
-			});
-			return ResultUtils.success("查询成功", deptList);
+			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
+			String deptid = userInfo.getDeptid();
+			List<DeptInfo> list = dubboDeptService.findRootTree(deptid);
+//			List<Map<String,Object>>deptList=new ArrayList<Map<String,Object>>();
+//			list.forEach(d->{
+//				Map<String,Object>deptidMap =new HashMap<String,Object>();
+//				List<Map<String,Object>>userList=new ArrayList<Map<String,Object>>();
+//				String deptid = d.getId();
+//				String name = d.getName();
+//				deptidMap.put("deptid", deptid);
+//				deptidMap.put("deptname", name);
+//				dubboUserService.getUserByDeptId(deptid).forEach(u->{
+//					Map<String,Object>userMap=new HashMap<String,Object>();
+//					String userid = u.getId();
+//					String username = u.getNickname();
+//					userMap.put("userid", userid);
+//					userMap.put("username", username);
+//					userList.add(userMap);
+//				});
+//				deptidMap.put("userList",userList);
+//				deptList.add(deptList.size(), deptidMap);
+//			});
+			return ResultUtils.success("查询成功", list);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
 		}
