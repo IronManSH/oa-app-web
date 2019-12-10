@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 
+import cn.sino.common.DateUtils;
 import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoAdmin;
@@ -29,7 +30,8 @@ public class WindowAdminController {
 		try {
 			UserInfoAdmin userinfo = UserInfoUtils.getBeanAdmin(request);
 			String userid = userinfo.getId();
-			List<Map<String, Object>> list = dubboWindowService.findWindow(userid);
+			String today = DateUtils.getToday();
+			List<Map<String, Object>> list = dubboWindowService.findWindow(userid,today);
 			return ResultUtils.success("查询成功", list);
 		}catch(Exception e) {
 			return ResultUtils.error(e.getMessage());

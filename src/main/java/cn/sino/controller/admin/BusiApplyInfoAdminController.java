@@ -117,7 +117,7 @@ public class BusiApplyInfoAdminController {
 		}
 	}
 	
-	@RequestMapping("/findPushWeek")
+	//@RequestMapping("/findPushWeek")
 	public Result findPushWeek(HttpServletRequest request){
 		try {
 			String num = request.getParameter("num");
@@ -141,7 +141,7 @@ public class BusiApplyInfoAdminController {
 		}
 	}
 	
-	@RequestMapping("/findPushMonth")
+	//@RequestMapping("/findPushMonth")
 	public Result findPushMonth(HttpServletRequest request){
 		try {
 			String num = request.getParameter("num");
@@ -165,7 +165,7 @@ public class BusiApplyInfoAdminController {
 		}
 	}
 	
-	@RequestMapping("/findPushBusinessDetails")
+	//@RequestMapping("/findPushBusinessDetails")
 	public Result findPushBusinessDetails(HttpServletRequest request){
 		try {
 			String id = request.getParameter("id");
@@ -176,7 +176,7 @@ public class BusiApplyInfoAdminController {
 		}
 	}
 	
-	@RequestMapping("/pushInfo")
+	//@RequestMapping("/pushInfo")
 	public Result pushInfo(HttpServletRequest request){
 		try {
 			String id = request.getParameter("id");

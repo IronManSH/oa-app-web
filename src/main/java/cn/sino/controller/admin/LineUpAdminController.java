@@ -255,7 +255,7 @@ public class LineUpAdminController {
 		}
 	}
 	
-	@RequestMapping("/findRoomTask")
+	//@RequestMapping("/findRoomTask")
 	public Result findRoomTask(HttpServletRequest request){
 		try{
 			
@@ -269,7 +269,7 @@ public class LineUpAdminController {
 		}
 	}
 	
-	@RequestMapping("/findOneRoomTask")
+	//@RequestMapping("/findOneRoomTask")
 	public Result findOneRoomTask(HttpServletRequest request){
 		try{
 			String id = request.getParameter("id");
