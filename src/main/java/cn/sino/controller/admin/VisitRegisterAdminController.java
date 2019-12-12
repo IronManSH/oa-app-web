@@ -1,6 +1,5 @@
 package cn.sino.controller.admin;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 
+import cn.sino.common.PageInfo;
 import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.service.dubbo.appointment.DubboVisitRegisterService;
@@ -21,13 +21,19 @@ public class VisitRegisterAdminController {
 	private DubboVisitRegisterService dubboVisitRegisterService;
 	
 	@RequestMapping("/findList")
-	public Result  findAll(HttpServletRequest request){
+	public PageInfo<Map<String,Object>> findAll(HttpServletRequest request,PageInfo<Map<String,Object>>pageinfo){
 		try {
-			String date = request.getParameter("date");
-			List<Map<String, Object>> list = dubboVisitRegisterService.findAllList(date);
-			return ResultUtils.success("查询成功", list);
+			String bdate = request.getParameter("bdate");
+			String edate = request.getParameter("edate");
+			String username = request.getParameter("username");
+			pageinfo = dubboVisitRegisterService.findAllList(username,bdate,edate,pageinfo.getPage(),pageinfo.getLimit());
+			pageinfo.setCode(PageInfo.SUCCESS);
+			pageinfo.setMsg("查询成功");
+			return pageinfo;
 		}catch(Exception e) {
-			return ResultUtils.error(e.getMessage());
+			pageinfo.setCode(PageInfo.ERROR);
+			pageinfo.setMsg(e.getMessage());
+			return pageinfo;
 		}
 	}
 
