@@ -107,6 +107,12 @@
 			<artifactId>qcloudsms</artifactId>
 			<version>1.0.6</version>
 		</dependency>
+		<!--  -->
+		<dependency>
+   			<groupId>cn.sino</groupId>
+    		<version>0.0.1-SNAPSHOT</version>
+  			<artifactId>bmp-api</artifactId>
+  		</dependency>
 	</dependencies>
 	<build>  
 		<finalName>${project.artifactId}</finalName>

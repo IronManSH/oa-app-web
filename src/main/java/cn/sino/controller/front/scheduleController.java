@@ -33,7 +33,7 @@ public class scheduleController {
 			String type="0";
 			List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 			//List<Map<String, Object>> checkList = dubboAppointmentService.findMyCheck(userId, date, type);
-			List<Map<String, Object>> applyList = dubboAppointmentService.findMyApply(userId, date, "1");
+			List<Map<String, Object>> applyList = dubboAppointmentService.findMyApply(userId, date);
 			//int size1 = checkList.size();
 			int size = applyList.size();
 			

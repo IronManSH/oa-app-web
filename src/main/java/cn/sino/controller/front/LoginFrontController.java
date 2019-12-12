@@ -98,14 +98,17 @@ public class LoginFrontController {
 			if(code==null||"".equals(code)){
 				throw new RuntimeException("验证码为空");
 			}
-			if(phone==null||"".equals(phone)){
-				throw new RuntimeException("手机号长度应为11位");
+			if(phone.length()!=11){
+				throw new RuntimeException("手机号不是11位");
 			}
 			if(!MyStringUtils.isInteger(phone)){
 				throw new RuntimeException("手机号不是数字");
 			}
 			if(!MyStringUtils.isInteger(code)){
 				throw new RuntimeException("验证码不是数字");
+			}
+			if(code.length()!=6){
+				throw new RuntimeException("验证码不是6位");
 			}
 			Object oldcode=ehcacheUtil.get(phone);
 			Map<String,Object> mapData=new HashMap<String,Object>();
@@ -155,8 +158,20 @@ public class LoginFrontController {
 	@RequestMapping("/regedit")
 	public Result regedit(String idcard,String name,String telephone,String address,String password,String passwordConfirm,String smscode){
 		try{
+			if(telephone==null||"".equals(telephone)){
+				throw new RuntimeException("手机号为空");
+			}
+			if(telephone.length()!=11){
+				throw new RuntimeException("手机号码不是11位");
+			}
+			if(!MyStringUtils.isInteger(telephone)){
+				throw new RuntimeException("手机号不是数字");
+			}
 			if(smscode==null||"".equals(smscode)){
 				throw new RuntimeException("验证码为空");
+			}
+			if(telephone.length()!=6){
+				throw new RuntimeException("验证码不是6位");
 			}
 			if(!MyStringUtils.isInteger(smscode)){
 				throw new RuntimeException("验证码不是数字");

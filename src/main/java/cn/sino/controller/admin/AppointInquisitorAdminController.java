@@ -1,6 +1,5 @@
 package cn.sino.controller.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +82,6 @@ public class AppointInquisitorAdminController {
 			UserInfoAdmin userinfo = UserInfoUtils.getBeanAdmin(request);
 			String userid = userinfo.getId();
 			String deptid = userinfo.getDeptid();
-			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 			String code="0";
 			if(deptid.equals(agdeptid)){
 				pageInfo =dubboAppointInquisitorService.findDoneList("",pageInfo.getPage(),pageInfo.getLimit());
@@ -143,7 +141,9 @@ public class AppointInquisitorAdminController {
 		try {
 			String checkreason = request.getParameter("checkreason");
 			String appointtime = request.getParameter("appointtime");
-			
+			if(!checkstatus.equals("1")&&!checkstatus.equals("2")){
+				throw new RuntimeException("checkstatus为无效字符");
+			}
 			dubboAppointInquisitorService.check(businessid, checkstatus, checkreason,appointtime);
 			Map<String, Object> map = dubboAppointInquisitorService.findDetails(businessid);
 			if(map!=null){
@@ -175,6 +175,9 @@ public class AppointInquisitorAdminController {
 	@RequestMapping("/findDetails")
 	public Result findDetails(String id){
 		try {
+			if(id==null||"".equals(id)){
+				throw new RuntimeException("id为空");
+			}
 			Map<String, Object> map = dubboAppointInquisitorService.findDetails(id);
 			return ResultUtils.success("查询成功",map);
 		} catch (Exception e) {

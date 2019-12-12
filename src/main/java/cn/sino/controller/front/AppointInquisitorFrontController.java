@@ -1,7 +1,6 @@
 package cn.sino.controller.front;
 
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,14 +51,19 @@ public class AppointInquisitorFrontController {
 	
 	//申请
 	@RequestMapping("/apply")
-	public Result apply(HttpServletRequest request,String title,String reason,String businessid,String businessname){
+	public Result apply(HttpServletRequest request,String title,String reason,String businessid,String businessname,String agentstatus){
 		try {
 			UserInfoFront userinfo = UserInfoUtils.getBeanFront(request);
 			String userid = userinfo.getId();
 			String name = userinfo.getName();
 			String idcard = userinfo.getIdcard();
 			String phone = userinfo.getTelephone();
-			dubboAppointInquisitorService.apply(title, userid, name, phone, idcard, reason,businessid,businessname);
+			if(agentstatus!=null&&!"".equals(agentstatus)){
+				if(!agentstatus.equals("0")&&!agentstatus.equals("1")){
+					throw new RuntimeException("agentstatus为无效字符");
+				}
+			}
+			dubboAppointInquisitorService.apply(title, userid, name, phone, idcard, reason,businessid,businessname,agentstatus);
 			//====================消息推送=====================================
 			String today = DateUtils.getToday();
 			Map<String, Object> dutyuser = dubboWindowDutyService.findByBusinessid(appointtypeid, today);//查询今天值班的案管人员
@@ -127,6 +131,26 @@ public class AppointInquisitorFrontController {
 			Map<String, Object> map = dubboAppointInquisitorService.findDetails(id);
 			
 			return ResultUtils.success("查询成功",map);
+		} catch (Exception e) {
+			return ResultUtils.error(e.getMessage());
+		}
+	}
+	
+	//更新来访状态
+	@RequestMapping("/updateVisitStatus")
+	public Result updateVisitStatus(String id,String visitstatus){
+		try {
+			if(id==null||"".equals(id)){
+				throw new RuntimeException("id为空");
+			}
+			if(visitstatus==null||"".equals(visitstatus)){
+				throw new RuntimeException("visitstatus为空");
+			}
+			if(!visitstatus.equals("1")&&!visitstatus.equals("2")){
+				throw new RuntimeException("visitstatus为无效字符");
+			}
+			dubboAppointInquisitorService.updateVisitStatus(id, visitstatus);
+			return ResultUtils.success("更新成功",null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
 		}

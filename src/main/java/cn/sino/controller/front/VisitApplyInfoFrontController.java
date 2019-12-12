@@ -129,7 +129,7 @@ public class VisitApplyInfoFrontController {
 				date = DateUtils.getToday();
 			}
 			String type="1";
-			List<Map<String, Object>> list = dubboVisitApplyInfoService.findMyApply(userId, date, type);
+			List<Map<String, Object>> list = dubboVisitApplyInfoService.findMyApply(userId, date);
 			return ResultUtils.success("查询成功", list);
 		}catch(Exception e) {
 			return ResultUtils.error(e.getMessage());
