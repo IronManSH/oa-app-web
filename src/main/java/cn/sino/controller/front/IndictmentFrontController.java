@@ -33,7 +33,7 @@ public class IndictmentFrontController {
 			UserInfoFront userinfo = UserInfoUtils.getBeanFront(request);
 			String handleUserId = userinfo.getId();
 			String handleUserName = userinfo.getName();
-			Result save = dubboInfoService.save(lineupInfoId, name, phone, idcard, businessId, businessName, appointTime, handleUserId, handleUserName);
+			Result save = dubboInfoService.save(lineupInfoId, name, phone, idcard, businessId, businessName, appointTime, handleUserId, handleUserName, handleUserName, handleUserName, handleUserName);
 			return save;
 		}catch(Exception e) {
 			return ResultUtils.error(e.getMessage());

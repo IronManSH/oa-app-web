@@ -80,7 +80,7 @@ public class LawReadInfoFrontController {
 			String id = dubboLawReadInfoService.apply(userid, username, phone, casename, casecontent, clientname,
 					 businessid,idcard);
 			Result photoresult = fileInfoBusiApiService.findByBusinessid(userid);
-			if(photoresult.getCode()==0){
+			if(photoresult.getCode()==0){//保存律师身份证照片
 				List<FileInfoBusiBean> lists=(List<FileInfoBusiBean>)photoresult.getData();
 				lists.forEach(f->{
 					String tag = f.getBusinesstag();
@@ -89,7 +89,7 @@ public class LawReadInfoFrontController {
 						byte[] idcardbyte= fileInfoBusiApiService.downloadByPath(path);
 						String code="sfz";
 						dubboLawReadInfoService.addPhoto(id, idcardbyte, code);
-					}else{
+					}else{//保存律师证照片
 						String path = f.getPath();
 						byte[] lawcardbyte= fileInfoBusiApiService.downloadByPath(path);
 						String code="lsz";
@@ -97,7 +97,7 @@ public class LawReadInfoFrontController {
 					}
 				});
 			}
-			clientbookfile.forEach(d->{
+			clientbookfile.forEach(d->{//保存委托书
 				try {
 					byte[] bytes = d.getBytes();
 					String code="wts";

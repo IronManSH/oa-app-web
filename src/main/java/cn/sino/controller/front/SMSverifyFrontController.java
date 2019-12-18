@@ -53,36 +53,21 @@ public class SMSverifyFrontController {
 			if(!MyStringUtils.isInteger(phone)){
 				throw new RuntimeException("手机号不是数字");
 			}
+			
+			//根据手机号清空旧验证码
+		    ehcacheUtil.remove(phone);
+		    String code="";
 			//生成验证码
 		    Random random = new Random();
-		    String code="";
 		    for (int i = 0; i < 6; i++) {
 		    	code += random.nextInt(10);
 		    }
-		    
+		    System.out.println("主线程的code:"+code);
 		    String[] params = {code,minute+""};
-		    //根据手机号清空旧验证码
-		    ehcacheUtil.remove(phone);
 		    //存缓存里面
 		    ehcacheUtil.put(phone, code);
-		     
-		    new Thread(new Runnable() {
-				@Override
-				public void run() {
-					Timer timer = new Timer();
-					timer.schedule(new TimerTask() {
-						public void run() {
-							 //根据手机号清空旧验证码
-							 Object oldcode=ehcacheUtil.get(phone);
-						     if(oldcode!=null){
-						    	 ehcacheUtil.put(phone, "1");
-						     }
-						     System.out.println("定时器已经被销毁");
-						     System.out.println("验证码已失效");
-						}
-					}, 10000);// 定时3分钟后删除
-				}
-		    }).start();
+		    
+		    timingThread(code,phone);
 		     
 		    //SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
 		    //SmsSingleSenderResult result = ssender.sendWithParam("86", phone,emplateId, params,smsSign, "","");
@@ -95,4 +80,32 @@ public class SMSverifyFrontController {
 			return ResultUtils.error(e.getMessage());
 		}
 	} 
+	
+	public void timingThread(String code,String phone){
+		if(code==null||"".equals(code)){
+			throw new RuntimeException("验证码为空");
+		}
+		
+		if(phone==null||"".equals(phone)){
+			throw new RuntimeException("手机号为空");
+		}
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("进入子线程。。。。。。");
+				Timer timer = new Timer();
+				timer.schedule(new TimerTask() {
+					public void run() {
+						 Object oldcode=ehcacheUtil.get(phone);
+					     if(code.equals(oldcode)){
+					    	 ehcacheUtil.put(phone, "1");
+					    	 System.out.println("验证码已失效");
+					     }
+					     System.out.println("定时器已经被销毁");
+					}
+				}, 10000);// 定时3分钟后删除
+			}
+		}).start();
+	}
 }

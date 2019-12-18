@@ -84,6 +84,13 @@ public class VisitApplyInfoFrontController {
 			String appointtime = request.getParameter("appointTime");
 			String appointcontent = request.getParameter("content");
 			String businessid = request.getParameter("businessid");
+			String status = dubboAppointTypeService.findOpenStatus(businessid);
+			if(status!=null&&!"".equals(status)){
+				if(status.equals("1")){
+					throw new RuntimeException("改业务尚未开放，敬请期待");
+				}
+			}
+			
 			String unit = userInfo.getUnit();
 			String idcard = userInfo.getIdcard();
 			String  watchmanuserid = dubboBusiWatchmanService.findWatchman(businessid).get(0).get("userid").toString();

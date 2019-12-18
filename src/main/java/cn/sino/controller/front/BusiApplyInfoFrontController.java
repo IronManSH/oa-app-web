@@ -28,6 +28,7 @@ import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoFront;
 import cn.sino.mvc.UserInfoUtils;
+import cn.sino.service.dubbo.appointment.DubboAppointTypeService;
 import cn.sino.service.dubbo.appointment.DubboBusiApplyInfoService;
 import cn.sino.service.dubbo.appointment.DubboLineUpService;
 
@@ -37,6 +38,8 @@ public class BusiApplyInfoFrontController {
 	
 	@Reference(check=false)
 	private DubboBusiApplyInfoService dubboBusiApplyInfoService;
+	@Reference(check=false)
+	private DubboAppointTypeService dubboAppointTypeService;
 	@Reference(check=false)
 	private DubboLineUpService dubboLineUpService;
 	@RequestMapping("/apply")
@@ -52,6 +55,14 @@ public class BusiApplyInfoFrontController {
 			String username = userInfo.getName();
 			String phone = userInfo.getTelephone();
 			String businessid = request.getParameter("businessid");
+			String status = dubboAppointTypeService.findOpenStatus(businessid);
+			//开放限制
+			if(status!=null&&!"".equals(status)){
+				if(status.equals("1")){
+					throw new RuntimeException("改业务尚未开放，敬请期待");
+				}
+			}
+			
 			String appointtime = request.getParameter("appointtime");
 			String timecode = request.getParameter("timecode");
 			String time1 = appointtime.split("\\(")[0];
@@ -72,16 +83,12 @@ public class BusiApplyInfoFrontController {
 					}
 				}
 			}
-			boolean whetherAppoint = dubboBusiApplyInfoService.whetherAppoint(businessid, idcard, appointtime);
-			if(whetherAppoint){
-				throw new RuntimeException("该时间段已预约该业务");
-			}
+			
 			String businessname = request.getParameter("businessname");
 			String windowid = request.getParameter("windowid");
 			String windowname = request.getParameter("windowname");
 			
-			String applyid = dubboBusiApplyInfoService.apply(userid, username,idcard,businessid, windowid,windowname,businessname, appointtime,phone,address);
-			dubboLineUpService.add(windowid, businessid, businessname, applyid, username, appointtime,timecode,idcard);
+			dubboBusiApplyInfoService.apply(userid, username,idcard,businessid, windowid,windowname,businessname, appointtime,phone,address,timecode);
 			return ResultUtils.success("预约成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

@@ -1,7 +1,5 @@
 package cn.sino.controller.admin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,47 +32,40 @@ public class MeetingAdminController {
 	@Reference(check=false)
 	private DubboMeetingService dubboMeetingService;
 	@Reference(check=false)
-	private DubboNettyService dubboNettyService;
-	@Reference(check=false)
 	private DubboUserService dubboUserService;
 	@Reference(check=false)
 	private DubboDeptService dubboDeptService;
-	//梧州
-	//系统id
-	@Value("${server.netty.appId}")
-	private String appId;
-	//业务类型id
-	@Value("${server.netty.busiTypeId}")
-	private String busiTypeId;
 
 	
 	@RequestMapping("/add")
 	public Result findMyasset(HttpServletRequest request){
 		try {
-			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
-			String userId = userInfo.getId();
-			String username = userInfo.getNickname();
+			
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
 			String address = request.getParameter("address");
 			String time = request.getParameter("time");
 			String member = request.getParameter("member");
-			String meetingid = dubboMeetingService.add(title, content, userId, username, address, time,member);
-			List<Map> parseArray = JSONObject.parseArray(member,Map.class);		
-			parseArray.forEach(d->{
-				String userid = d.get("userid").toString();
-				String name = d.get("username").toString();
-				dubboMeetingService.addMember(meetingid, userid, name);
-				NettyUserBean bean=new NettyUserBean();
-				bean.setAppid(appId);
-				bean.setBusitypeid(busiTypeId);
-			    bean.setTitle("会议邀请");//推送标题
-			    bean.setContent("内容：会议发布人："+username+"会议时间："+time+"，会议内容："+content);//推送内容
-			    bean.setUserId(userid);//接收人id
-			    bean.setUserName(name);//接收人姓名
-			    PushResult result=dubboNettyService.sendToUser(bean);
-			    System.out.println(result.getMsg());
-			});
+			if(title==null||"".equals(title)){
+				throw new RuntimeException("任务标题为空");
+			}
+			if(content==null||"".equals(content)){
+				throw new RuntimeException("任务内容为空");
+			}
+			if(address==null||"".equals(address)){
+				throw new RuntimeException("任务地点为空");
+			}
+			if(time==null||"".equals(time)){
+				throw new RuntimeException("任务时间为空");
+			}
+			if(member==null||"".equals(member)){
+				throw new RuntimeException("任务人员为空");
+			}
+			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
+			String userId = userInfo.getId();
+			String username = userInfo.getNickname();
+			dubboMeetingService.add(title, content, userId, username, address, time,member);
+			
 			return ResultUtils.success("发布成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

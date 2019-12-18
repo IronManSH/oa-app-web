@@ -94,14 +94,23 @@ public class CaseManageAdminController {
 	
 	//创建案件任务
 	@RequestMapping("/create")
-	public Result create(String title,String duration,HttpServletRequest request){
+	public Result create(String title,String duration,String trialstatus,HttpServletRequest request){
 		try {
 			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
 			String userid = userInfo.getId();
 			String username = userInfo.getNickname();
 			String deptid = userInfo.getDeptid();
 			String deptname = userInfo.getDeptname();
-			dubboCaseManageService.create(title, userid, username, deptid, deptname,duration);
+			if(title==null||"".equals(title)){
+				throw new RuntimeException("title为空");
+			}
+			if(duration==null||"".equals(duration)){
+				throw new RuntimeException("duration为空");
+			}
+			if(trialstatus==null||"".equals(trialstatus)){
+				throw new RuntimeException("trialstatus为空");
+			}
+			dubboCaseManageService.create(title, userid, username, deptid, deptname,duration,trialstatus);
 			return ResultUtils.success("创建成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
@@ -183,7 +192,11 @@ public class CaseManageAdminController {
 			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
 			String userid = userInfo.getId();
 			String username = userInfo.getNickname();
-			dubboCaseManageService.receive(businessid, userid, username);
+			String whereabouts = request.getParameter("whereabouts");
+			if(whereabouts==null||"".equals(whereabouts)){
+				throw new RuntimeException("whereabouts为空");
+			}
+			dubboCaseManageService.receive(businessid, userid, username,whereabouts);
 			return ResultUtils.success("接收成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
