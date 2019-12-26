@@ -94,7 +94,7 @@ public class CaseManageAdminController {
 	
 	//创建案件任务
 	@RequestMapping("/create")
-	public Result create(String title,String duration,String trialstatus,HttpServletRequest request){
+	public Result create(String title,String duration,HttpServletRequest request){
 		try {
 			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
 			String userid = userInfo.getId();
@@ -107,10 +107,7 @@ public class CaseManageAdminController {
 			if(duration==null||"".equals(duration)){
 				throw new RuntimeException("duration为空");
 			}
-			if(trialstatus==null||"".equals(trialstatus)){
-				throw new RuntimeException("trialstatus为空");
-			}
-			dubboCaseManageService.create(title, userid, username, deptid, deptname,duration,trialstatus);
+			dubboCaseManageService.create(title, userid, username, deptid, deptname,duration);
 			return ResultUtils.success("创建成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

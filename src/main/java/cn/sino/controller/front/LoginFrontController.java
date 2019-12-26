@@ -114,11 +114,14 @@ public class LoginFrontController {
 			Map<String,Object> mapData=new HashMap<String,Object>();
 			if(oldcode!=null){
 				if(oldcode.equals("1")){
-					throw new RuntimeException("验证码已失效");
+					throw new RuntimeException("验证码已失效，请重新发送验证码");
 				}else if(!oldcode.equals(code)){
 					throw new RuntimeException("验证码错误");
 				}else{
 					Map<String, Object> map= dubboUserSiteService.findByPhone(phone);
+					if(map==null){
+						throw new RuntimeException("该手机号未注册，请先注册再登录");
+					}
 					//生成ssoname
 					String ssoname="appfront"+UUID.randomUUID().toString();
 					map.put("ssoname", ssoname);
@@ -145,7 +148,7 @@ public class LoginFrontController {
 					mapData.put("type",type);
 				}
 			}else{
-				throw new RuntimeException("验证失败");
+				throw new RuntimeException("验证失败，请重新发送验证码");
 			}
 			return ResultUtils.success("登录成功", mapData);
 		} catch(Exception e) {
@@ -158,19 +161,35 @@ public class LoginFrontController {
 	@RequestMapping("/regedit")
 	public Result regedit(String idcard,String name,String telephone,String address,String password,String passwordConfirm,String smscode){
 		try{
+			
+			if(name==null||"".equals(name)){
+				throw new RuntimeException("姓名为空");
+			}
 			if(telephone==null||"".equals(telephone)){
 				throw new RuntimeException("手机号为空");
 			}
 			if(telephone.length()!=11){
-				throw new RuntimeException("手机号码不是11位");
+				throw new RuntimeException("手机号不是11位");
 			}
 			if(!MyStringUtils.isInteger(telephone)){
 				throw new RuntimeException("手机号不是数字");
 			}
+			if(password==null||"".equals(password)){
+				throw new RuntimeException("密码为空");
+			}
+			if(passwordConfirm==null||"".equals(passwordConfirm)){
+				throw new RuntimeException("第二次密码为空");
+			}
+			if(idcard==null||"".equals(idcard)){
+				throw new RuntimeException("身份证号为空");
+			}
+			if(address==null||"".equals(address)){
+				throw new RuntimeException("地址为空");
+			}
 			if(smscode==null||"".equals(smscode)){
 				throw new RuntimeException("验证码为空");
 			}
-			if(telephone.length()!=6){
+			if(smscode.length()!=6){
 				throw new RuntimeException("验证码不是6位");
 			}
 			if(!MyStringUtils.isInteger(smscode)){
@@ -178,19 +197,16 @@ public class LoginFrontController {
 			}
 			Object oldcode=ehcacheUtil.get(telephone);
 			System.out.println("oldcode:"+oldcode);
-		    if(oldcode!=null){
-		    	if(oldcode.equals("1")){
-		    		throw new RuntimeException("验证码已失效");
-		    	}else if(!oldcode.equals(smscode)){
-		    		throw new RuntimeException("验证码错误");
-		    	}else{
-		    		dubboUserSiteService.register(idcard, name, telephone, address,password, passwordConfirm);
-		    		ehcacheUtil.remove(telephone);
-		    		System.out.println("验证成功");
-		    	}
-		    }else{
-		    	throw new RuntimeException("验证失败");
+		    if(oldcode==null){
+		    	throw new RuntimeException("验证失败,请重新发送验证码");
 		    }
+		    if(oldcode.equals("1")){
+	    		throw new RuntimeException("验证码已失效,请重新发送验证码");
+	    	}else if(!oldcode.equals(smscode)){
+	    		throw new RuntimeException("验证码错误");
+	    	}
+		    dubboUserSiteService.register(idcard, name, telephone, address,password, passwordConfirm);
+		    ehcacheUtil.remove(telephone);
 			return ResultUtils.success("注册成功", null);
 		}catch(Exception e){
 			return ResultUtils.error(e.getMessage());
@@ -202,56 +218,80 @@ public class LoginFrontController {
 	public Result regeditLaw(String idcard,String name,String telephone,String password,String passwordConfirm,
 			 List<MultipartFile> idcardphotos, List<MultipartFile> otherphotos,String smscode){
 		try{
+			if(name==null||"".equals(name)){
+				throw new RuntimeException("姓名为空");
+			}
+			if(idcard==null||"".equals(idcard)){
+				throw new RuntimeException("身份证号为空");
+			}
+			if(telephone==null||"".equals(telephone)){
+				throw new RuntimeException("手机号为空");
+			}
+			if(telephone.length()!=11){
+				throw new RuntimeException("手机号不是11位");
+			}
+			if(!MyStringUtils.isInteger(telephone)){
+				throw new RuntimeException("手机号不是数字");
+			}
+			if(password==null||"".equals(password)){
+				throw new RuntimeException("密码为空");
+			}
+			if(passwordConfirm==null||"".equals(passwordConfirm)){
+				throw new RuntimeException("第二次密码为空");
+			}
 			if(smscode==null||"".equals(smscode)){
 				throw new RuntimeException("验证码为空");
+			}
+			if(smscode.length()!=6){
+				throw new RuntimeException("验证码不是6位");
 			}
 			if(!MyStringUtils.isInteger(smscode)){
 				throw new RuntimeException("验证码不是数字");
 			}
+			if(idcardphotos==null||idcardphotos.size()==0){
+				throw new RuntimeException("身份证照片为空");
+			}
+			if(otherphotos==null||otherphotos.size()==0){
+				throw new RuntimeException("其他相关证件照片为空");
+			}
+			
 			Object oldcode=ehcacheUtil.get(telephone);
 			System.out.println("oldcode:"+oldcode);
-			String msg="提交成功";
-			if(oldcode!=null){
-		    	if(oldcode.equals("1")){
-		    		throw new RuntimeException("验证码已失效");
-		    	}else if(!oldcode.equals(smscode)){
-		    		throw new RuntimeException("验证码错误");
-		    	}else{//验证通过
-					if(idcardphotos==null||idcardphotos.size()==0){
-						throw new RuntimeException("身份证照片为空");
-					}
-					if(otherphotos==null||otherphotos.size()==0){
-						throw new RuntimeException("其他相关证件照片为空");
-					}
-					Map<String,Object> map= dubboUserSiteService.registerLaw(idcard, name, telephone, password,passwordConfirm);
-					
-					if(map!=null&&!"".equals(map)){
-						String fileName=null;
-						String userid=map.get("userid")==null?"":map.get("userid").toString();
-						msg=map.get("msg")==null?"":map.get("msg").toString();
-						for(MultipartFile f:idcardphotos){//身份证照片上传
-							try {
-								byte[] bytes = f.getBytes();
-								fileName = f.getOriginalFilename();
-								fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "idcardphotos");
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-						for(int i=0;i<otherphotos.size();i++){
-							try {
-								byte[] bytes = otherphotos.get(i).getBytes();
-								fileName = otherphotos.get(i).getOriginalFilename();
-								fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "otherphotos");
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					}
-		    	}
-		    }else{
-		    	throw new RuntimeException("验证失败");
+			if(oldcode==null){
+				throw new RuntimeException("验证失败,请重新发送验证码");
 		    }
+			if(oldcode.equals("1")){
+	    		throw new RuntimeException("验证码已失效,请重新发送验证码");
+	    	}else if(!oldcode.equals(smscode)){
+	    		throw new RuntimeException("验证码错误");
+	    	}
+			Map<String,Object> map= dubboUserSiteService.registerLaw(idcard, name, telephone, password,passwordConfirm);
+			String msg="提交成功";
+			if(map!=null&&!"".equals(map)){
+				String fileName=null;
+				String userid=map.get("userid")==null?"":map.get("userid").toString();
+				msg=map.get("msg")==null?"":map.get("msg").toString();
+				for(MultipartFile f:idcardphotos){//身份证照片上传
+					try {
+						byte[] bytes = f.getBytes();
+						fileName = f.getOriginalFilename();
+						fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "idcardphotos");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				for(int i=0;i<otherphotos.size();i++){
+					try {
+						byte[] bytes = otherphotos.get(i).getBytes();
+						fileName = otherphotos.get(i).getOriginalFilename();
+						fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "otherphotos");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			ehcacheUtil.remove(telephone);
 			return ResultUtils.success(msg, null);
 		}catch(Exception e){
 			return ResultUtils.error(e.getMessage());
