@@ -200,7 +200,7 @@ public class LoginFrontController {
 	//律师注册
 	@RequestMapping("/regeditLaw")
 	public Result regeditLaw(String idcard,String name,String telephone,String password,String passwordConfirm,
-			String lawcode,String unitaddress, List<MultipartFile> idcardphotos, List<MultipartFile> lawphotos,String smscode){
+			 List<MultipartFile> idcardphotos, List<MultipartFile> otherphotos,String smscode){
 		try{
 			if(smscode==null||"".equals(smscode)){
 				throw new RuntimeException("验证码为空");
@@ -220,11 +220,10 @@ public class LoginFrontController {
 					if(idcardphotos==null||idcardphotos.size()==0){
 						throw new RuntimeException("身份证照片为空");
 					}
-					if(lawphotos==null||lawphotos.size()==0){
-						throw new RuntimeException("律师证照片为空");
+					if(otherphotos==null||otherphotos.size()==0){
+						throw new RuntimeException("其他相关证件照片为空");
 					}
-					Map<String,Object> map= dubboUserSiteService.registerLaw(idcard, name, telephone, password,
-							passwordConfirm,lawcode,unitaddress);
+					Map<String,Object> map= dubboUserSiteService.registerLaw(idcard, name, telephone, password,passwordConfirm);
 					
 					if(map!=null&&!"".equals(map)){
 						String fileName=null;
@@ -234,16 +233,16 @@ public class LoginFrontController {
 							try {
 								byte[] bytes = f.getBytes();
 								fileName = f.getOriginalFilename();
-								fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "idcard");
+								fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "idcardphotos");
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						}
-						for(int i=0;i<lawphotos.size();i++){
+						for(int i=0;i<otherphotos.size();i++){
 							try {
-								byte[] bytes = lawphotos.get(i).getBytes();
-								fileName = lawphotos.get(i).getOriginalFilename();
-								fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "law");
+								byte[] bytes = otherphotos.get(i).getBytes();
+								fileName = otherphotos.get(i).getOriginalFilename();
+								fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "otherphotos");
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

@@ -33,6 +33,7 @@ import cn.sino.service.dubbo.appointment.DubboWindowDutyService;
 import cn.sino.service.dubbo.appointment.DubboWindowInfoService;
 import cn.sino.service.dubbo.maintain.DubboMaintainService;
 import cn.sino.service.dubbo.notice.DubboNoticeService;
+import cn.sino.service.dubbo.onjob.DubboOnjobService;
 import cn.sino.service.dubbo.setting.DubboActivityService;
 import cn.sino.service.dubbo.setting.DubboUserSiteService;
 import cn.sino.service.dubbo.transaction.DubboTransactionService;
@@ -70,6 +71,8 @@ public class HomePageController {
 	private DubboActivityService dubboActivityService;
 	@Reference(check=false)
 	private DubboCaseManageService dubboCaseManageService;
+	@Reference(check=false)
+	private DubboOnjobService dubboOnjobService;
 	//维护维修系统id(梧州)
 	@Value("${ep.whwx.subId}")
 	private String subId;
@@ -101,7 +104,7 @@ public class HomePageController {
 			List<Map<String, Object>> activitList = dubboActivityService.findMyReleaseList(userid, date);//活动发布
 			List<Map<String,Object>>lawlist=new ArrayList<Map<String,Object>>();
 			if(deptid.equals(agdeptid)){
-				lawlist= dubboUserSiteService.findLawUser("", "","",date);//律师注册
+				lawlist= dubboUserSiteService.findLawUser("", "","");//律师注册
 				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findMyCheck("", date);//律师阅卷审批
 				lawlist.addAll(lawReadInfoList);
 			}
@@ -111,6 +114,8 @@ public class HomePageController {
 //			List<Map<String, Object>> roomTaskList=new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> windowList=new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> windowIdList = dubboWindowDutyService.findWindowIdList(userid, date);//检查是否有权限查看窗口
+			
+			List<Map<String, Object>> onjobList = dubboOnjobService.findMyApply(userid, date);//在岗情况
 			
 			if(windowIdList.size()!=0){
 				Date nowdate = new Date();
@@ -133,6 +138,7 @@ public class HomePageController {
 				}
 		        	
 			}
+			
 //			Integer num = dubboWindowInfoService.inspect(userid);//查询接待室权限
 //			if(num!=0){
 //				roomTaskList = dubboLineUpService.findRoomTaskList(date);//获取接待室任务
@@ -186,6 +192,12 @@ public class HomePageController {
 					visitList.add(visitList.size(),f);
 				});
 			}
+			if(onjobList.size()!=0){
+				onjobList.forEach(f->{
+					visitList.add(visitList.size(),f);
+				});
+			}
+			
 			return ResultUtils.success("查询成功", visitList);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

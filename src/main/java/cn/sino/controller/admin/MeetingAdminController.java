@@ -46,6 +46,9 @@ public class MeetingAdminController {
 			String address = request.getParameter("address");
 			String time = request.getParameter("time");
 			String member = request.getParameter("member");
+			String contactsid = request.getParameter("contactsid");
+			String contactsname = request.getParameter("contactsname");
+			String telephone = request.getParameter("telephone");
 			if(title==null||"".equals(title)){
 				throw new RuntimeException("任务标题为空");
 			}
@@ -61,10 +64,16 @@ public class MeetingAdminController {
 			if(member==null||"".equals(member)){
 				throw new RuntimeException("任务人员为空");
 			}
+			if(contactsid==null||"".equals(contactsid)||contactsname==null||"".equals(contactsname)){
+				throw new RuntimeException("联系人为空");
+			}
+			if(telephone==null||"".equals(telephone)){
+				throw new RuntimeException("联系电话为空");
+			}
 			UserInfoAdmin userInfo = UserInfoUtils.getBeanAdmin(request);
 			String userId = userInfo.getId();
 			String username = userInfo.getNickname();
-			dubboMeetingService.add(title, content, userId, username, address, time,member);
+			dubboMeetingService.add(title, content, userId, username, address, time,member,contactsid,contactsname,telephone);
 			
 			return ResultUtils.success("发布成功", null);
 		} catch (Exception e) {

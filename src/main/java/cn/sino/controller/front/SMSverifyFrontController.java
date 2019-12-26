@@ -38,6 +38,7 @@ public class SMSverifyFrontController {
 	@Value("${minute}")
 	private int minute;
 	
+	
 	@RequestMapping("/sendCode")
 	public Result sendCode(String phone){
 		try {
@@ -104,7 +105,7 @@ public class SMSverifyFrontController {
 					     }
 					     System.out.println("定时器已经被销毁");
 					}
-				}, 10000);// 定时3分钟后删除
+				}, 60000*minute);// 定时3分钟后删除
 			}
 		}).start();
 	}

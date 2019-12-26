@@ -74,12 +74,6 @@ public class LawReadAdminController {
 		try {
 			String id = request.getParameter("id");
 			Map<String, Object> map = dubboLawReadInfoService.findDetail(id);
-			String userid = map.get("userid").toString();
-			Map<String, Object> user = dubboUserSiteService.findUserExt(userid);
-			Object idcard = user.get("idcard");
-			Object lawcode = user.get("lawcode");
-			map.put("idcard", idcard);
-			map.put("lawcode", lawcode);
 			return ResultUtils.success("查询成功", map);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

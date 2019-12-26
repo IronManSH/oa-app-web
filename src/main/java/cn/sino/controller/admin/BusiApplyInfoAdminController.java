@@ -1,7 +1,6 @@
 package cn.sino.controller.admin;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSONObject;
-import com.micro.push.model.NettyUserBean;
-import com.micro.push.model.PushResult;
 import com.micro.push.service.DubboNettyService;
 
 import cn.sino.common.DateUtils;
@@ -98,6 +94,9 @@ public class BusiApplyInfoAdminController {
 	@RequestMapping("/findDetail")
 	public Result findDetail(HttpServletRequest request,String id){
 		try {
+			if(id==null||"".equals(id)){
+				throw new RuntimeException("id为空");
+			}
 			Map<String, Object> map = dubboBusiApplyInfoService.findDetail(id);
 			return ResultUtils.success("查询成功", map);
 		} catch (Exception e) {
@@ -105,101 +104,19 @@ public class BusiApplyInfoAdminController {
 		}
 	}
 	
-	
-	
 	@RequestMapping("/updataStatus")
 	public Result updataStatus(HttpServletRequest request,String id,String status){
 		try {
+			if(id==null||"".equals(id)){
+				throw new RuntimeException("id为空");
+			}
+			if(status==null||"".equals(status)){
+				throw new RuntimeException("status为空");
+			}
 			dubboBusiApplyInfoService.updataStatus(id, status,"");
 			return ResultUtils.success("更新成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
 		}
 	}
-	
-	//@RequestMapping("/findPushWeek")
-	public Result findPushWeek(HttpServletRequest request){
-		try {
-			String num = request.getParameter("num");
-			String appointtime = request.getParameter("appointtime");
-			String timecode = request.getParameter("timecode");
-			String push = request.getParameter("push");
-			String today = DateUtils.getToday();
-			String days="7";
-			List<Map> parseArray = JSONObject.parseArray(businessidjson,Map.class);
-			List<Map<String,Object>>list=new ArrayList<Map<String,Object>>();
-			parseArray.forEach(d->{
-				String businessid = d.get("businessid").toString();
-				List<Map<String, Object>> businesslist = dubboBusiApplyInfoService.findPushBusiness(businessid, days,push, today, num, appointtime, timecode);
-				businesslist.forEach(f->{
-					list.add(list.size(), f);
-				});
-			});
-			return ResultUtils.success("查询成功", list);
-		} catch (Exception e) {
-			return ResultUtils.error(e.getMessage());
-		}
-	}
-	
-	//@RequestMapping("/findPushMonth")
-	public Result findPushMonth(HttpServletRequest request){
-		try {
-			String num = request.getParameter("num");
-			String appointtime = request.getParameter("appointtime");
-			String timecode = request.getParameter("timecode");
-			String push = request.getParameter("push");
-			String today = DateUtils.getToday();
-			String days="90";
-			List<Map> parseArray = JSONObject.parseArray(businessidjson,Map.class);
-			List<Map<String,Object>>list=new ArrayList<Map<String,Object>>();
-			parseArray.forEach(d->{
-				String businessid = d.get("businessid").toString();
-				List<Map<String, Object>> businesslist = dubboBusiApplyInfoService.findPushBusiness(businessid, days,push, today, num, appointtime, timecode);
-				businesslist.forEach(f->{
-					list.add(list.size(), f);
-				});
-			});
-			return ResultUtils.success("查询成功", list);
-		} catch (Exception e) {
-			return ResultUtils.error(e.getMessage());
-		}
-	}
-	
-	//@RequestMapping("/findPushBusinessDetails")
-	public Result findPushBusinessDetails(HttpServletRequest request){
-		try {
-			String id = request.getParameter("id");
-			Map<String, Object> map = dubboBusiApplyInfoService.findPushBusinessDetails(id);
-			return ResultUtils.success("查询成功", map);
-		} catch (Exception e) {
-			return ResultUtils.error(e.getMessage());
-		}
-	}
-	
-	//@RequestMapping("/pushInfo")
-	public Result pushInfo(HttpServletRequest request){
-		try {
-			String id = request.getParameter("id");
-			String userid = request.getParameter("userid");
-			String username = request.getParameter("username");
-			String info = request.getParameter("info");
-			NettyUserBean bean=new NettyUserBean();
-			bean.setAppid(appId);
-			bean.setBusitypeid(busiTypeId);
-		    bean.setTitle("业务办理回执");//推送标题
-		    bean.setContent("内容："+info);//推送内容
-		    bean.setUserId(userid);//接收人id
-		    bean.setUserName(username);//接收人姓名
-		    PushResult result=dubboNettyService.sendToUser(bean);
-		    System.out.println(result.getMsg());
-			dubboBusiApplyInfoService.pushInfo(id);
-			return ResultUtils.success("推送成功", null);
-		} catch (Exception e) {
-			return ResultUtils.error(e.getMessage());
-		}
-	}
-	
-	
-	
-	
 }

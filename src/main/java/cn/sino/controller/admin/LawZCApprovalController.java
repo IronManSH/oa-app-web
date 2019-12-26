@@ -1,7 +1,5 @@
 package cn.sino.controller.admin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.push.model.NettyUserBean;
 import com.micro.push.model.PushResult;
 import com.micro.push.service.DubboNettyService;
-import com.sinosoft.api.pojo.FileInfoBusiBean;
 import com.sinosoft.api.service.FileInfoBusiApiService;
 
 import cn.sino.common.Result;
@@ -29,8 +26,7 @@ import cn.sino.service.dubbo.setting.DubboUserSiteService;
 public class LawZCApprovalController {
 	@Reference(check=false)
 	private DubboUserSiteService dubboUserSiteService;
-	@Reference(check=false)
-	private FileInfoBusiApiService fileInfoBusiApiService;
+	
 	@Reference(check=false)
 	private DubboNettyService dubboNettyService;
 	//消息推送
@@ -56,7 +52,8 @@ public class LawZCApprovalController {
 			String idcard = request.getParameter("idcard");
 			String name = request.getParameter("name");
 			String status = request.getParameter("status");
-			List<Map<String, Object>> list = dubboUserSiteService.findLawUser(idcard, name, status,"");
+			
+			List<Map<String, Object>> list = dubboUserSiteService.findLawUser(idcard, name, status);
 			return ResultUtils.success("查询成功", list);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
@@ -68,29 +65,7 @@ public class LawZCApprovalController {
 	public Result findLawDetails(HttpServletRequest request,String userid){
 		try {
 			Map<String, Object> map = dubboUserSiteService.findLawDetails(userid);
-			Result photoresult = fileInfoBusiApiService.findByBusinessid(userid);
-			List<FileInfoBusiBean> lists=(List<FileInfoBusiBean>)photoresult.getData();
-			List<Map<String ,Object>>photolist=new ArrayList<Map<String,Object>>();
-			lists.forEach(d->{
-				String tag = d.getBusinesstag();
-				if(tag.equals("idcard")){
-					String path = d.getPath();
-					Map<String,Object> photomap = new HashMap<String,Object>();
-					photomap.put("code", "idcard");
-					byte[] photobyte = fileInfoBusiApiService.downloadByPath(path);
-					photomap.put("byte", photobyte);
-					photolist.add(photolist.size(), photomap);
-				}else{
-					String path = d.getPath();
-					Map<String,Object> photomap = new HashMap<String,Object>();
-					photomap.put("code", "law");
-					byte[] photobyte = fileInfoBusiApiService.downloadByPath(path);
-					photomap.put("byte", photobyte);
-					photolist.add(photolist.size(), photomap);
-				}
 			
-			});
-			map.put("photolist", photolist);
 			return ResultUtils.success("查询成功", map); 	
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

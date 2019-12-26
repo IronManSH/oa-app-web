@@ -107,12 +107,20 @@
 			<artifactId>qcloudsms</artifactId>
 			<version>1.0.6</version>
 		</dependency>
-		<!--  -->
+		<!-- 申控 -->
 		<dependency>
    			<groupId>cn.sino</groupId>
     		<version>0.0.1-SNAPSHOT</version>
   			<artifactId>bmp-api</artifactId>
   		</dependency>
+  		
+  		<!-- 申控网上办理-->
+  		<dependency>
+			<groupId>cn.sino</groupId>
+			<artifactId>online-handle-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 	<build>  
 		<finalName>${project.artifactId}</finalName>
