@@ -1,20 +1,16 @@
 package cn.sino.controller.front;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSONObject;
 import com.sinosoft.api.pojo.FileInfoBusiBean;
 import com.sinosoft.api.service.FileInfoBusiApiService;
 
@@ -62,22 +58,20 @@ public class LawReadInfoFrontController {
 			if(clientbookfile==null||clientbookfile.size()==0){
 				throw new RuntimeException("委托书照片为空");
 			}
-		
-			List<Map> list =new ArrayList<Map>();
+			String id = dubboLawReadInfoService.apply(userid, username, phone, idcard, casename,
+					casecontent, clientname, businessid);
 			//上传委托书照片
 			String filename=null;
 			byte []filebyte=null;
 			for(MultipartFile i:clientbookfile){
-				Map<String,Object>map=new HashMap<String,Object>();
 				filename = i.getOriginalFilename();
-				filebyte=i.getBytes();
-				map.put("filename", filename);
-				map.put("filebyte", filebyte);
-				list.add(list.size(), map);
+				filebyte = i.getBytes();
+				Result result = fileInfoBusiApiService.uploadMulti(filebyte, "",filename , userid, id, "clientbook");
+				Integer code = result.getCode();
+				if(code!=0){
+					throw new RuntimeException("上传委托书失败，"+result.getMsg());
+				}
 			}
-			String clientbookjson = JSONObject.toJSONString(list);
-			dubboLawReadInfoService.apply(userid, username, phone, idcard, casename,
-					casecontent, clientname, businessid,clientbookjson);
 		    return ResultUtils.success("申请成功", null);
 		}catch(Exception e){
 			return ResultUtils.error(e.getMessage());

@@ -30,7 +30,6 @@ import cn.sino.mvc.UserInfoFront;
 import cn.sino.mvc.UserInfoUtils;
 import cn.sino.service.dubbo.appointment.DubboAppointTypeService;
 import cn.sino.service.dubbo.appointment.DubboBusiApplyInfoService;
-import cn.sino.service.dubbo.appointment.DubboLineUpService;
 
 @RestController
 @RequestMapping("/appfront/busi")
@@ -40,8 +39,6 @@ public class BusiApplyInfoFrontController {
 	private DubboBusiApplyInfoService dubboBusiApplyInfoService;
 	@Reference(check=false)
 	private DubboAppointTypeService dubboAppointTypeService;
-	@Reference(check=false)
-	private DubboLineUpService dubboLineUpService;
 	@RequestMapping("/apply")
 	public Result apply(HttpServletRequest request){
 		try {

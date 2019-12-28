@@ -18,7 +18,6 @@ import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoFront;
 import cn.sino.mvc.UserInfoUtils;
 import cn.sino.service.dubbo.appointment.DubboAppointTypeService;
-import cn.sino.service.dubbo.setting.DubboSignupService;
 import cn.sino.service.dubbo.setting.DubboUserSiteService;
 
 @RestController
@@ -29,8 +28,6 @@ public class AppointTypeFronController {
 	private DubboAppointTypeService dubboAppointTypeService;
 	@Reference(check=false)
 	private DubboUserSiteService dubboUserSiteService;
-	@Reference(check=false)
-	private DubboSignupService dubboSignupService;
 	@RequestMapping("/findAllList")
 	public Result findAllList(HttpServletRequest request ,String apktag,String type) {
 		try{

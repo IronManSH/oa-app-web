@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.micro.service.dubbo.user.DubboUserService;
 import com.sinosoft.api.service.FileInfoBusiApiService;
 
 import cn.sino.common.MyStringUtils;
@@ -31,8 +30,6 @@ import cn.sino.utils.EhcacheUtil;
 public class LoginFrontController {
 	@Reference(check=false)
 	private DubboUserSiteService dubboUserSiteService;
-	@Reference(check=false)
-	private DubboUserService dubboUserService;
 	@Autowired
 	private EhcacheUtil ehcacheUtil;
 	@Reference(check=false)

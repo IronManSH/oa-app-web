@@ -30,7 +30,6 @@ import com.micro.push.model.NettyUserBean;
 import com.micro.push.model.PushResult;
 import com.micro.push.service.DubboNettyService;
 import com.micro.service.dubbo.user.DubboDeptService;
-import com.micro.service.dubbo.user.DubboRolesService;
 import com.micro.service.dubbo.user.DubboUserService;
 
 import cn.sino.common.DateUtils;
@@ -60,8 +59,6 @@ public class VisitApplyInfoFrontController {
 	private DubboNettyService dubboNettyService;
 	@Reference(check=false)
 	private DubboDeptService dubboDeptService;
-	@Reference(check=false)
-	private DubboRolesService dubboRolesService;
 	@Reference(check=false)
 	private DubboBusiWatchmanService dubboBusiWatchmanService;
 	//梧州

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.model.UserInfo;
-import com.micro.service.dubbo.user.DubboLoginService;
 import com.micro.service.dubbo.user.DubboUserService;
 
 import cn.sino.common.Result;
@@ -23,14 +22,11 @@ import cn.sino.mvc.UserInfoUtils;
 public class LoginAdminController {
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
-	@Reference(check=false)
-	private DubboLoginService dubboLoginService;
 	//登录
 	@RequestMapping("/login")
 	public Result login(String username,String password){
 		try{
 			
-			//UserInfo user = dubboLoginService.login(username, password);//wz
 			UserInfo user = dubboUserService.login(username, password);//eq
 			if(user==null){
 				throw new RuntimeException("用户名或密码错误");

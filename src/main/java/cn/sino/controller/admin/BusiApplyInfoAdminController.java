@@ -18,7 +18,6 @@ import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoAdmin;
 import cn.sino.mvc.UserInfoUtils;
-import cn.sino.service.dubbo.appointment.DubboAppointTypeService;
 import cn.sino.service.dubbo.appointment.DubboBusiApplyInfoService;
 
 @RestController
@@ -27,8 +26,6 @@ public class BusiApplyInfoAdminController {
 	
 	@Reference(check=false)
 	private DubboBusiApplyInfoService dubboBusiApplyInfoService;
-	@Reference(check=false)
-	private DubboAppointTypeService dubboBusinessService;
 	@Reference(check=false)
 	private DubboNettyService dubboNettyService;
 	//梧州

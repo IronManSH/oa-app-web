@@ -24,7 +24,6 @@ import cn.sino.mvc.UserInfoUtils;
 import cn.sino.service.dubbo.appointment.DubboVisitApplyInfoService;
 import cn.sino.service.dubbo.appointment.DubboVisitCheckInfoService;
 import cn.sino.service.dubbo.appointment.DubboVisitRegisterService;
-import cn.sino.service.dubbo.setting.DubboUserSiteService;
 
 @RestController
 @RequestMapping("/app/visitor")
@@ -36,8 +35,6 @@ public class VisitApplyInfoAdminController {
 	private DubboVisitCheckInfoService dubboVisitCheckInfoService;
 	@Reference(check=false)
 	private DubboVisitRegisterService dubboVisitRegisterService;
-	@Reference(check=false)
-	private DubboUserSiteService dubboUserSiteService;
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
 	@Reference(check=false)

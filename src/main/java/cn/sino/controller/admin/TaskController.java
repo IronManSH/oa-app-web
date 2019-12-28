@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.micro.service.dubbo.user.DubboUserService;
 
 import cn.sino.common.PageInfo;
 import cn.sino.common.Result;
@@ -23,8 +22,6 @@ import cn.sino.service.dubbo.task.DubboTaskService;
 public class TaskController {
 	@Reference(check=false)
 	private DubboTaskService dubboTaskService;
-	@Reference(check=false)
-	private DubboUserService dubboUserService;
 	
 	@RequestMapping("/findTree")
 	public Result findTree(HttpServletRequest request){

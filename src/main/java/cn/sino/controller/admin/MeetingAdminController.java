@@ -5,17 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSONObject;
 import com.micro.model.DeptInfo;
 import com.micro.model.UserInfo;
-import com.micro.push.model.NettyUserBean;
-import com.micro.push.model.PushResult;
-import com.micro.push.service.DubboNettyService;
 import com.micro.service.dubbo.user.DubboDeptService;
 import com.micro.service.dubbo.user.DubboUserService;
 

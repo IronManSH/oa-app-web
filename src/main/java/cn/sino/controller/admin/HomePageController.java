@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.model.UserInfo;
-import com.micro.push.service.DubboNettyService;
 import com.micro.service.dubbo.user.DubboRolesService;
 import com.micro.service.dubbo.user.DubboUserService;
 
@@ -30,7 +29,6 @@ import cn.sino.service.dubbo.appointment.DubboLineUpService;
 import cn.sino.service.dubbo.appointment.DubboMeetingService;
 import cn.sino.service.dubbo.appointment.DubboVisitApplyInfoService;
 import cn.sino.service.dubbo.appointment.DubboWindowDutyService;
-import cn.sino.service.dubbo.appointment.DubboWindowInfoService;
 import cn.sino.service.dubbo.maintain.DubboMaintainService;
 import cn.sino.service.dubbo.notice.DubboNoticeService;
 import cn.sino.service.dubbo.onjob.DubboOnjobService;
@@ -50,13 +48,9 @@ public class HomePageController {
 	@Reference(check=false)
 	private DubboVisitApplyInfoService dubboVisitApplyInfoService;
 	@Reference(check=false)
-	private DubboNettyService dubboNettyService; 
-	@Reference(check=false)
 	private DubboMaintainService  dubboMaintainService;
 	@Reference(check=false)
 	private DubboRolesService dubboRolesService;
-	@Reference(check=false)
-	private DubboWindowInfoService dubboWindowInfoService;
 	@Reference(check=false)
 	private DubboWindowDutyService dubboWindowDutyService;
 	@Reference(check=false)

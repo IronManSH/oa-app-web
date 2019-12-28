@@ -10,19 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.micro.push.model.NettyUserBean;
-import com.micro.push.model.PushResult;
-import com.micro.push.service.DubboNettyService;
-import com.sinosoft.api.service.FileInfoBusiApiService;
 
 import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoAdmin;
 import cn.sino.mvc.UserInfoUtils;
 import cn.sino.service.dubbo.appointment.DubboLawReadInfoService;
-import cn.sino.service.dubbo.appointment.DubboWindowDutyService;
-import cn.sino.service.dubbo.appointment.DubboWindowInfoService;
-import cn.sino.service.dubbo.setting.DubboUserSiteService;
 @RestController
 @RequestMapping("/app/lawReadInfo")
 public class LawReadAdminController {

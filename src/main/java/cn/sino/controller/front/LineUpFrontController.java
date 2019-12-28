@@ -15,7 +15,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import cn.sino.common.DateUtils;
 import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
-import cn.sino.service.dubbo.appointment.DubboBusiApplyInfoService;
 import cn.sino.service.dubbo.appointment.DubboLineUpService;
 
 @RestController
@@ -24,8 +23,6 @@ public class LineUpFrontController {
 	
 	@Reference(check=false)
 	private DubboLineUpService dubboLineUpService;
-	@Reference(check=false)
-	private DubboBusiApplyInfoService dubboBusiApplyInfoService;
 	
 	@RequestMapping("/findList")
 	public Result findList(HttpServletRequest request){

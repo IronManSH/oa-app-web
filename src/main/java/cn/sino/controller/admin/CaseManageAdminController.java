@@ -11,12 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.model.UserInfo;
-import com.micro.push.model.NettyUserBean;
-import com.micro.push.model.PushResult;
-import com.micro.push.service.DubboNettyService;
 import com.micro.service.dubbo.user.DubboUserService;
 
-import cn.sino.common.DateUtils;
 import cn.sino.common.PageInfo;
 import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
@@ -24,7 +20,6 @@ import cn.sino.mvc.UserInfoAdmin;
 import cn.sino.mvc.UserInfoUtils;
 import cn.sino.service.dubbo.appointment.DubboCaseManageService;
 import cn.sino.service.dubbo.appointment.DubboCaseTypeService;
-import cn.sino.service.dubbo.appointment.DubboWindowDutyService;
 
 @RestController
 @RequestMapping("/app/casemanage")
@@ -34,8 +29,6 @@ public class CaseManageAdminController {
 	private DubboCaseTypeService dubboCaseTypeService;
 	@Reference(check=false)
 	private DubboCaseManageService dubboCaseManageService;
-	@Reference(check=false)
-	private DubboWindowDutyService dubboWindowDutyService;
 	
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
