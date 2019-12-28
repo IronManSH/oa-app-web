@@ -24,16 +24,17 @@ public class SMSverifyFrontController {
 	private EhcacheUtil ehcacheUtil;
 	
 	@Value("${sdkappid}")
-	private int appid;
+	private int appid;//短信应用id
 	
 	@Value("${appkey}")
-	private String appkey;
-	
-	@Value("${templateid.zcyz}")
-	private int emplateId;//短信注册验证模板id
+	private String appkey;//短信应用key
 	
 	@Value("${smsSign}")
-	private String smsSign;
+	private String smsSign;//短信签名
+	
+	@Value("${templateid.zcyz}")
+	private int templateId;//短信注册验证模板id
+	
 	
 	@Value("${minute}")
 	private int minute;
@@ -71,8 +72,8 @@ public class SMSverifyFrontController {
 		    timingThread(code,phone);
 		     
 		    //SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
-		    //SmsSingleSenderResult result = ssender.sendWithParam("86", phone,emplateId, params,smsSign, "","");
-			System.out.println("result");
+		    //SmsSingleSenderResult result = ssender.sendWithParam("86", phone,templateId, params,smsSign, "","");
+			//System.out.println(result);
 			System.out.println(phone);
 			System.out.println(code);
 			System.out.println("********************************");

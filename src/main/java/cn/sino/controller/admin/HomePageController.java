@@ -104,18 +104,16 @@ public class HomePageController {
 			List<Map<String, Object>> activitList = dubboActivityService.findMyReleaseList(userid, date);//活动发布
 			List<Map<String,Object>>lawlist=new ArrayList<Map<String,Object>>();
 			if(deptid.equals(agdeptid)){
-				lawlist= dubboUserSiteService.findLawUser("", "","");//律师注册
-				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findMyCheck("", date);//律师阅卷审批
+				lawlist= dubboUserSiteService.findLawUser("", "","",date);//律师注册
+				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findMyCheck("0", date);//律师阅卷审批
 				lawlist.addAll(lawReadInfoList);
 			}
 			List<Map<String, Object>> aglist = dubboCaseManageService.findNotDoneList(userid, date);//案管
 			List<Map<String, Object>> maintainList =new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> lineUpList = dubboLineUpService.findTaskList(userid, date);//窗口业务
-//			List<Map<String, Object>> roomTaskList=new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> windowList=new ArrayList<Map<String,Object>>();
 			List<Map<String, Object>> windowIdList = dubboWindowDutyService.findWindowIdList(userid, date);//检查是否有权限查看窗口
 			
-			List<Map<String, Object>> onjobList = dubboOnjobService.findMyApply(userid, date);//在岗情况
 			
 			if(windowIdList.size()!=0){
 				Date nowdate = new Date();
@@ -139,10 +137,6 @@ public class HomePageController {
 		        	
 			}
 			
-//			Integer num = dubboWindowInfoService.inspect(userid);//查询接待室权限
-//			if(num!=0){
-//				roomTaskList = dubboLineUpService.findRoomTaskList(date);//获取接待室任务
-//			}
 			Map<String, Object> roles = dubboRolesService.findRolesById(userid, subId);//查询维护维护业务角色
 			String rolesNO = roles.get("rolesNO").toString();
 			if(rolesNO.equals(wxglcode)){
@@ -160,11 +154,6 @@ public class HomePageController {
 					visitList.add(visitList.size(),f);
 				});
 			}
-//			if(roomTaskList.size()!=0){
-//				roomTaskList.forEach(f->{
-//					visitList.add(visitList.size(),f);
-//				});
-//			}
 			if(windowList.size()!=0){
 				windowList.forEach(f->{
 					visitList.add(visitList.size(),f);
@@ -189,11 +178,6 @@ public class HomePageController {
 			}
 			if(aglist.size()!=0){
 				aglist.forEach(f->{
-					visitList.add(visitList.size(),f);
-				});
-			}
-			if(onjobList.size()!=0){
-				onjobList.forEach(f->{
 					visitList.add(visitList.size(),f);
 				});
 			}
@@ -321,7 +305,7 @@ public class HomePageController {
 //					roomTaskNum = dubboLineUpService.findTaskNum(date+"-"+i);//接待室任务数量
 //				}
 				if(deptid.equals(agdeptid)){
-					lawTaskNum= dubboUserSiteService.findTaskNum("", date+"-"+i);
+					lawTaskNum= dubboUserSiteService.findTaskNum("", date+"-"+i);//律师注册
 					Integer lwsreadnum = dubboLawReadInfoService.findTaskNum("", date+"-"+i);
 					lawTaskNum+=lwsreadnum;
 				}

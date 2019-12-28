@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -214,6 +215,7 @@ public class LoginFrontController {
 	}
 	
 	//律师注册
+	@CrossOrigin(origins="*",maxAge=3600)
 	@RequestMapping("/regeditLaw")
 	public Result regeditLaw(String idcard,String name,String telephone,String password,String passwordConfirm,
 			 List<MultipartFile> idcardphotos, List<MultipartFile> otherphotos,String smscode){
@@ -223,6 +225,9 @@ public class LoginFrontController {
 			}
 			if(idcard==null||"".equals(idcard)){
 				throw new RuntimeException("身份证号为空");
+			}
+			if(idcard.length()!=18){
+				throw new RuntimeException("身份证号不是18位");
 			}
 			if(telephone==null||"".equals(telephone)){
 				throw new RuntimeException("手机号为空");

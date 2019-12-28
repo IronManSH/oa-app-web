@@ -41,26 +41,6 @@ public class OutRegeditAdminController {
 			if(etime==null||"".equals(etime)){
 				throw new RuntimeException("etime为空");
 			}
-			try {
-				DateUtils.parseDate(btime, "yyyy-MM-dd HH:mm");
-				
-			} catch (Exception e) {
-				throw new RuntimeException("错误的格式时间："+btime);
-			}
-			try {
-				DateUtils.parseDate(etime, "yyyy-MM-dd HH:mm");
-			} catch (Exception e) {
-				throw new RuntimeException("错误的格式时间："+etime);
-			}
-			if(type.equals("3")||type.equals("4")||type.equals("5")){
-			}else{
-				throw new RuntimeException("无效字符："+type);
-			}
-			
-			int whether = dubboOnjobService.whether(userid, btime, etime);
-			if(whether>0){
-				throw new RuntimeException("该时间段已有外出安排");
-			}
 			dubboOnjobService.apply(userid, username, deptid, deptname, type, btime, etime, reason);
 			return ResultUtils.success("申请成功", null);
 		} catch (Exception e) {

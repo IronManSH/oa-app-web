@@ -29,24 +29,6 @@ public class LawReadAdminController {
 	
 	@Reference(check=false)
 	private DubboLawReadInfoService dubboLawReadInfoService;
-	@Reference(check=false)
-	private DubboUserSiteService dubboUserSiteService;
-	@Reference(check=false)
-	private FileInfoBusiApiService fileInfoBusiApiService;
-	@Reference(check=false)
-	private DubboNettyService dubboNettyService;
-	@Reference(check=false)
-	private DubboWindowInfoService dubboWindowInfoService;
-	@Reference(check=false)
-	private DubboWindowDutyService dubboWindowDutyService;
-	//消息推送
-	//系统id
-	@Value("${server.netty.appId}")
-	private String appId;
-	//业务类型id
-	@Value("${server.netty.busiTypeId}")
-	private String busiTypeId;
-	
 	@Value("${agdeptid}")
 	private String agdeptid;	
 
@@ -102,36 +84,7 @@ public class LawReadAdminController {
 			String invitetime= request.getParameter("invitetime");
 			String checkreason = request.getParameter("checkreason");
 			dubboLawReadInfoService.check(id, status, checkreason,invitetime,userid,username);
-			String msg="";
-			String content="";
-			String receiverid ="";
-			String receivername ="";
-			String windowname ="";
 			
-			//===============消息推送=========================//
-			Map<String, Object> map = dubboLawReadInfoService.findDetail(id);
-			if(map!=null&&!"".equals(map)){
-				receiverid = map.get("userid").toString();
-				receivername = map.get("username").toString();
-				windowname = map.get("windowname").toString();
-				if(status.equals("1")){
-					msg="审批通过";
-					content="来取光碟时间："+invitetime+"\n取光碟的窗口："+windowname;
-				}else{
-					msg="审批不通过";
-					content=checkreason;
-				}
-				System.out.println(content);
-				NettyUserBean bean=new NettyUserBean();
-				bean.setAppid(appId);
-				bean.setBusitypeid(busiTypeId);
-			    bean.setTitle("律师阅卷预约"+msg);//推送标题
-			    bean.setContent(content);//推送内容
-			    bean.setUserId(receiverid);//接收人id
-			    bean.setUserName(receivername);//接收人姓名
-			    PushResult result=dubboNettyService.sendToUser(bean);
-			    System.out.println(result.getMsg());
-			}
 			return ResultUtils.success("审批成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
@@ -142,6 +95,9 @@ public class LawReadAdminController {
 	@RequestMapping("/deal")
 	public Result deal(HttpServletRequest request,String id){
 		try {
+			if(id==null||"".equals(id)){
+				throw new RuntimeException("id为空");
+			}
 			dubboLawReadInfoService.deal(id);
 			return ResultUtils.success("办理成功",null);
 		} catch (Exception e) {

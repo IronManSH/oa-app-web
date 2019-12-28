@@ -50,9 +50,12 @@ public class ActivityFrontController {
 			List<Map> parseArray = JSONObject.parseArray(noticeurljson,Map.class);
 			String  url = parseArray.get(0).get("url").toString();
 			PageInfo<Map<String, Object>> list = dubboActivityService.findList(1,3,userid);
+			for(int i=0;i<list.getRows().size();i++){
+				String id = list.getRows().get(i).get("id").toString();
+				list.getRows().get(i).put("url", url+id);
+			}
 			list.getRows().forEach(l->{
-				String id = l.get("id").toString();
-				l.put("url", url+id);
+				
 			});
 			List<Map<String, Object>> newlist = list.getRows();
 			return ResultUtils.success("查询成功", newlist);
