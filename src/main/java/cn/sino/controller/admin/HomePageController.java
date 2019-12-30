@@ -102,7 +102,7 @@ public class HomePageController {
 			List<Map<String,Object>>lawlist=new ArrayList<Map<String,Object>>();
 			if(deptid.equals(agdeptid)){
 				lawlist= dubboUserSiteService.findLawUser("", "","",date);//律师注册
-				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findMyCheck("0", date);//律师阅卷审批
+				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findSomeDayTask(date);//律师阅卷审批
 				//List<Map<String, Object>> InquisitorList = dubboAppointInquisitorService.findSomeDayTask(userid, date);//约见检察官
 				lawlist.addAll(lawReadInfoList);
 			}
@@ -299,12 +299,15 @@ public class HomePageController {
 				Integer lawTaskNum=0;
 				//Integer roomTaskNum=0;
 				Integer ativityNum = dubboActivityService.findMyReleaseNum(userid, date+"-"+i);
+				if(i==30){
+					System.out.println();
+				}
 //				if(!code.equals("0")){
 //					roomTaskNum = dubboLineUpService.findTaskNum(date+"-"+i);//接待室任务数量
 //				}
 				if(deptid.equals(agdeptid)){
 					lawTaskNum= dubboUserSiteService.findTaskNum("", date+"-"+i);//律师注册
-					Integer lwsreadnum = dubboLawReadInfoService.findTaskNum("", date+"-"+i);
+					Integer lwsreadnum = dubboLawReadInfoService.findTaskNum("", date+"-"+i);//律师阅卷
 					lawTaskNum+=lwsreadnum;
 				}
 				if(rolesNO.equals(wxglcode)){
