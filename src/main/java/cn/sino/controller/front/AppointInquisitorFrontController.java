@@ -58,10 +58,14 @@ public class AppointInquisitorFrontController {
 			String name = userinfo.getName();
 			String idcard = userinfo.getIdcard();
 			String phone = userinfo.getTelephone();
-			if(agentstatus!=null&&!"".equals(agentstatus)){
-				if(!agentstatus.equals("0")&&!agentstatus.equals("1")){
-					throw new RuntimeException("agentstatus为无效字符");
-				}
+			if(title==null||"".equals(title)){
+				throw new RuntimeException("案件名为空");
+			}
+			if(reason==null||"".equals(reason)){
+				throw new RuntimeException("约见理由为空");
+			}
+			if(agentstatus==null||"".equals(agentstatus)){
+				throw new RuntimeException("办理状态为空");
 			}
 			dubboAppointInquisitorService.apply(title, userid, name, phone, idcard, reason,businessid,businessname,agentstatus);
 			//====================消息推送=====================================

@@ -71,13 +71,13 @@ public class SMSverifyFrontController {
 		    
 		    timingThread(code,phone);
 		     
-//		    SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
-//		    SmsSingleSenderResult result = ssender.sendWithParam("86", phone,templateId, params,smsSign, "","");
-//			System.out.println(result);
-//			System.out.println(phone);
-//			System.out.println(code);
+		    SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+		    SmsSingleSenderResult result = ssender.sendWithParam("86", phone,templateId, params,smsSign, "","");
+			System.out.println(result);
+			System.out.println(phone);
+			System.out.println(code);
 			System.out.println("********************************");
-			return ResultUtils.success("发送成功", code);
+			return ResultUtils.success("发送成功", null);
 		}catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
 		}

@@ -1,16 +1,19 @@
 package cn.sino.controller.front;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSONObject;
 import com.sinosoft.api.pojo.FileInfoBusiBean;
 import com.sinosoft.api.service.FileInfoBusiApiService;
 
@@ -139,7 +142,15 @@ public class LawReadInfoFrontController {
 			String userid = userinfo.getId();
 			byte[] bytes = file.getBytes();
 			String fileName = file.getOriginalFilename();
-			fileInfoBusiApiService.uploadMulti(bytes, "", fileName, userid, userid, "test");
+			Map<String,Object> map=new HashMap<String,Object>();
+			//String encodeBase64String = Base64.encodeBase64String(bytes);
+			map.put("bytes",bytes);
+			map.put("fileName", fileName);
+			String jsonString = JSONObject.toJSONString(map);
+			Map parseObject = JSONObject.parseObject(jsonString, Map.class);
+			byte[] bytes2 = Base64.decodeBase64(map.get("bytes").toString());
+			String fileName2 = parseObject.get("fileName").toString();
+			fileInfoBusiApiService.uploadMulti(bytes2, "", fileName2, userid, userid, "test");
 			return ResultUtils.success("上传成功", null);
 		} catch (Exception e) {
 			return ResultUtils.error(e.getMessage());

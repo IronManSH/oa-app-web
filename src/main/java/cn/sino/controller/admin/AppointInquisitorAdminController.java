@@ -150,9 +150,9 @@ public class AppointInquisitorAdminController {
 				String userid = map.get("applyuserid")==null?"":map.get("applyuserid").toString();
 				String username = map.get("applyusername")==null?"":map.get("applyusername").toString();
 				String msg="";
-				if(checkstatus.equals("1")){
+				if(checkstatus.equals("2")){
 					msg="申请通过，约见时间："+appointtime;
-				}else if(checkstatus.equals("2")){
+				}else if(checkstatus.equals("3")){
 					msg="申请驳回，驳回理由："+checkreason;
 				}
 				NettyUserBean bean=new NettyUserBean();

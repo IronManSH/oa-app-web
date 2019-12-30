@@ -52,7 +52,7 @@ public class ActivityFrontController {
 			PageInfo<Map<String, Object>> list = dubboActivityService.findList(1,3,userid);
 			for(int i=0;i<list.getRows().size();i++){
 				String id = list.getRows().get(i).get("id").toString();
-				list.getRows().get(i).put("url", url+id);
+				list.getRows().get(i).put("url", url+id+"&userid="+userid);
 			}
 			list.getRows().forEach(l->{
 				

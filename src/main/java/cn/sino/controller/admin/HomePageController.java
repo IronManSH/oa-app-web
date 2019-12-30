@@ -23,6 +23,7 @@ import cn.sino.common.Result;
 import cn.sino.common.ResultUtils;
 import cn.sino.mvc.UserInfoAdmin;
 import cn.sino.mvc.UserInfoUtils;
+import cn.sino.service.dubbo.appointment.DubboAppointInquisitorService;
 import cn.sino.service.dubbo.appointment.DubboCaseManageService;
 import cn.sino.service.dubbo.appointment.DubboLawReadInfoService;
 import cn.sino.service.dubbo.appointment.DubboLineUpService;
@@ -67,6 +68,8 @@ public class HomePageController {
 	private DubboCaseManageService dubboCaseManageService;
 	@Reference(check=false)
 	private DubboOnjobService dubboOnjobService;
+	@Reference(check=false)
+	private DubboAppointInquisitorService dubboAppointInquisitorService;
 	//维护维修系统id(梧州)
 	@Value("${ep.whwx.subId}")
 	private String subId;
@@ -100,6 +103,7 @@ public class HomePageController {
 			if(deptid.equals(agdeptid)){
 				lawlist= dubboUserSiteService.findLawUser("", "","",date);//律师注册
 				List<Map<String, Object>> lawReadInfoList = dubboLawReadInfoService.findMyCheck("0", date);//律师阅卷审批
+				//List<Map<String, Object>> InquisitorList = dubboAppointInquisitorService.findSomeDayTask(userid, date);//约见检察官
 				lawlist.addAll(lawReadInfoList);
 			}
 			List<Map<String, Object>> aglist = dubboCaseManageService.findNotDoneList(userid, date);//案管
