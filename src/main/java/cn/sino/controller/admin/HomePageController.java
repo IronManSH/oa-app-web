@@ -35,15 +35,12 @@ import cn.sino.service.dubbo.notice.DubboNoticeService;
 import cn.sino.service.dubbo.onjob.DubboOnjobService;
 import cn.sino.service.dubbo.setting.DubboActivityService;
 import cn.sino.service.dubbo.setting.DubboUserSiteService;
-import cn.sino.service.dubbo.transaction.DubboTransactionService;
 
 @RestController
 @RequestMapping("/app/HomePage")
 public class HomePageController {
 	@Reference(check=false)
 	private DubboNoticeService dubboNoticeService; 
-	@Reference(check=false)
-	private DubboTransactionService dubboTransactionService;
 	@Reference(check=false)
 	private DubboLineUpService dubboLineUpService;
 	@Reference(check=false)
@@ -336,24 +333,24 @@ public class HomePageController {
 	@RequestMapping("/findStatistics")
 	public Result findStatistics(HttpServletRequest request) {
 		try {
-			Date d = new Date();  
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
-	        String date = sdf.format(d);  
-	        UserInfoAdmin userInfo=UserInfoUtils.getBeanAdmin(request);
-			String userId=userInfo.getId();
-			String deptId = userInfo.getDeptid();
-			List<Map<String, Object>> busiList = dubboTransactionService.findNumAndType(userId,date);
-			Map<String, Object> noticeMap = dubboNoticeService.findNumAndType(date, deptId);
-			String num = noticeMap.get("num").toString();
-			if(!num.equals("0")){
-				busiList.add(busiList.size(),noticeMap);
-			}
-			Map<String, Object> inviterMap = dubboVisitApplyInfoService.findNumAndType(userId, date);
-			num=inviterMap.get("num").toString();
-			if(!num.equals("0")){
-				busiList.add(busiList.size(),inviterMap);
-			}
-			return ResultUtils.success("查询成功",busiList);
+//			Date d = new Date();  
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+//	        String date = sdf.format(d);  
+//	        UserInfoAdmin userInfo=UserInfoUtils.getBeanAdmin(request);
+//			String userId=userInfo.getId();
+//			String deptId = userInfo.getDeptid();
+//			List<Map<String, Object>> busiList = dubboTransactionService.findNumAndType(userId,date);
+//			Map<String, Object> noticeMap = dubboNoticeService.findNumAndType(date, deptId);
+//			String num = noticeMap.get("num").toString();
+//			if(!num.equals("0")){
+//				busiList.add(busiList.size(),noticeMap);
+//			}
+//			Map<String, Object> inviterMap = dubboVisitApplyInfoService.findNumAndType(userId, date);
+//			num=inviterMap.get("num").toString();
+//			if(!num.equals("0")){
+//				busiList.add(busiList.size(),inviterMap);
+//			}
+			return ResultUtils.success("查询成功",null);
 		}catch (Exception e) {
 			return ResultUtils.error(e.getMessage());
 		}
@@ -369,12 +366,6 @@ public class HomePageController {
 			switch(type) {
 				case "tz":
 					map=dubboNoticeService.findDetail(id, sendId);
-					break;
-				case "swsq":
-					map=dubboTransactionService.findApplyDetail(id);
-					break;
-				case "swsp":
-					map=dubboTransactionService.findCheckDetail(id);
 					break;
 				case "lf":
 					map=dubboVisitApplyInfoService.findDetail(id);

@@ -63,14 +63,15 @@
   		</dependency>
   		<dependency>
   			<groupId>cn.sino</groupId>
-  			<artifactId>oa-transaction-api</artifactId>
-  			<version>0.0.1-SNAPSHOT</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>cn.sino</groupId>
   			<artifactId>oa-task-api</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
+  		<!-- 事务管理 -->
+  		<dependency>
+            <groupId>cn.sino</groupId>
+            <artifactId>affairs-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
   		<!-- 二维码 生成-->
 		<dependency>
             <groupId>com.google.zxing</groupId>
@@ -106,13 +107,6 @@
 			<groupId>com.github.qcloudsms</groupId>
 			<artifactId>qcloudsms</artifactId>
 			<version>1.0.6</version>
-		</dependency>
-  		
-  		<!-- 申控网上办理-->
-  		<dependency>
-			<groupId>cn.sino</groupId>
-			<artifactId>online-handle-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
 	</dependencies>
