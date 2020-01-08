@@ -35,7 +35,7 @@ public class LineUpAdminController {
 	private DubboBusiApplyInfoService dubboBusiApplyInfoService;
 	@Reference(check=false)
 	private DubboWindowInfoService dubboWindowInfoService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private DubboNettyService dubboNettyService;
 	//梧州
 	//系统id

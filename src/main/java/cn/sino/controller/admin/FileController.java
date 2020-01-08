@@ -19,7 +19,7 @@ import cn.sino.common.ResultUtils;
 @RestController
 @RequestMapping("/app/file")
 public class FileController {
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private FileInfoBusiApiService fileInfoBusiApiService;
 	
 	

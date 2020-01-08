@@ -14,7 +14,7 @@ import cn.sino.service.dubbo.setting.DubboApkManageService;
 @RestController
 @RequestMapping("/app/apk")
 public class ApkManageAdminController {
-	@Reference(check=false,timeout=50000)
+	@Reference(check=false,timeout=60000,retries=0)
 	private DubboApkManageService dubboApkManageServiec;
 	
 	@RequestMapping("/findIsLastest")

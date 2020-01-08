@@ -13,7 +13,7 @@ import cn.sino.service.dubbo.setting.DubboAppBottomService;
 
 @RestController
 @RequestMapping("/appfront/appBottom")
-public class AppBottomController {
+public class AppBottomFrontController {
 	
 	@Reference(check=false)
 	private DubboAppBottomService dubboAppBottomService;

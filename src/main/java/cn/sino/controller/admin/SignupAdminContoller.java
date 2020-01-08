@@ -28,10 +28,9 @@ import cn.sino.service.dubbo.setting.DubboSignupService;
 public class SignupAdminContoller {
 	@Reference(check=false)
 	private DubboActivityService dubboActivityService;
-	
 	@Reference(check=false)
 	private DubboSignupService dubboSignupService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private DubboNettyService dubboNettyService;
 	@Reference(check=false)
 	private DubboRolesService dubboRolesService;

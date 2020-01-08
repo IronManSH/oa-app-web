@@ -34,7 +34,7 @@ public class LoginFrontController {
 	private EhcacheUtil ehcacheUtil;
 	@Reference(check=false)
 	private DubboChinaAreaService dubboChinaAreaService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private FileInfoBusiApiService fileInfoBusiApiService;
 	
 	

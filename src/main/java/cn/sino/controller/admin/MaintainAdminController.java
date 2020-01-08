@@ -49,7 +49,7 @@ public class MaintainAdminController {
 	private FileInfoBusiApiService fileInfoBusiApiService;
 	@Reference(check=false)
 	private DubboFaultTypeService dubboFaultTypeService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private DubboNettyService dubboNettyService;
 	//维护维修系统id
 	@Value("${ep.whwx.subId}")

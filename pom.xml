@@ -41,26 +41,33 @@
 			<artifactId>ehcache</artifactId>  
 		</dependency>
   		<!-- 业务接口 -->
+  		<!-- 预约管理 -->
   		<dependency>
   			<groupId>cn.sino</groupId>
   			<artifactId>oa-appoint-api</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
+  		
+  		<!--维护维修  -->
   		<dependency>
   			<groupId>cn.sino</groupId>
   			<artifactId>oa-maintain-api</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
+  		<!-- 专网通知 -->
   		<dependency>
   			<groupId>cn.sino</groupId>
   			<artifactId>oa-notice-api</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
+  		
+  		<!-- 在岗情况 -->
   		<dependency>
   			<groupId>cn.sino</groupId>
   			<artifactId>oa-onjob-api</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
+  		
   		<dependency>
   			<groupId>cn.sino</groupId>
   			<artifactId>oa-task-api</artifactId>

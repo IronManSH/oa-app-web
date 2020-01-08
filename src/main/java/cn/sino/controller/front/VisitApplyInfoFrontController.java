@@ -55,7 +55,7 @@ public class VisitApplyInfoFrontController {
 	private DubboAppointTypeService dubboAppointTypeService;
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private DubboNettyService dubboNettyService;
 	@Reference(check=false)
 	private DubboDeptService dubboDeptService;

@@ -20,6 +20,7 @@ import cn.sino.service.dubbo.setting.DubboUserSiteService;
 @RestController
 @RequestMapping("/app/lawZCApproval")
 public class LawZCApprovalController {
+	
 	@Reference(check=false)
 	private DubboUserSiteService dubboUserSiteService;
 	

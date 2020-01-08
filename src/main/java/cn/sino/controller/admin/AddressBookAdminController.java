@@ -21,7 +21,7 @@ import cn.sino.mvc.UserInfoUtils;
 
 @RestController
 @RequestMapping("/app/addressbook")
-public class AddressBookController {
+public class AddressBookAdminController {
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
 	

@@ -32,7 +32,7 @@ public class VisitRegisterFrontController {
 	private DubboVisitRegisterService dubboVisitRegisterService;
 	@Reference(check=false)
 	private DubboUserSiteService dubboUserSiteService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=60000,retries=0)
 	private DubboNettyService dubboNettyService;
 	//梧州
 	//系统id

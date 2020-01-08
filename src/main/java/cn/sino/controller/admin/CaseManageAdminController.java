@@ -29,7 +29,6 @@ public class CaseManageAdminController {
 	private DubboCaseTypeService dubboCaseTypeService;
 	@Reference(check=false)
 	private DubboCaseManageService dubboCaseManageService;
-	
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
 	

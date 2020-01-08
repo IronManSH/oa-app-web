@@ -30,7 +30,7 @@ public class AppointInquisitorFrontController {
 
 	@Reference(check=false)
 	private DubboAppointInquisitorService dubboAppointInquisitorService;
-	@Reference(check=false)
+	@Reference(check=false,timeout=6000,retries=0)
 	private DubboNettyService dubboNettyService;
 	@Reference(check=false)
 	private DubboUserService dubboUserService;
